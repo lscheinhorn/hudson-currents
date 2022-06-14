@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/gwb-currents/static/css/main.f0a44ae8.css",
+    "main.js": "/gwb-currents/static/js/main.502e23a7.js",
+    "static/js/787.532200fb.chunk.js": "/gwb-currents/static/js/787.532200fb.chunk.js",
+    "index.html": "/gwb-currents/index.html",
+    "main.f0a44ae8.css.map": "/gwb-currents/static/css/main.f0a44ae8.css.map",
+    "main.502e23a7.js.map": "/gwb-currents/static/js/main.502e23a7.js.map",
+    "787.532200fb.chunk.js.map": "/gwb-currents/static/js/787.532200fb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f0a44ae8.css",
+    "static/js/main.502e23a7.js"
+  ]
+}
