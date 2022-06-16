@@ -1,0 +1,14 @@
+.side-by-side {
+    display:flex;
+    padding: 20px;
+    border: solid white 2px;
+}
+
+.space-around {
+    padding: 20px 10px;
+}
+
+.large-bold {
+    font-size: 150%;
+    font: bold;
+}
