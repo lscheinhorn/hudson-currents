@@ -13,20 +13,23 @@ export default function Current (props) {
     const getHours = () => {
         let hours = date.getHours()
         if ( hours < 13 ) {
-            meridian = hours !== 12 ? "a.m." : "p.m."
+            meridian = hours !== 12 ? "am" : "pm"
             if ( hours < 1 ) {
                 hours = 12
             }
             return hours
         } else {
             hours -= 12
-            meridian = "p.m."
+            meridian = "pm"
             return hours
         }
     }
     const timeString = getHours() + ":" + (date.getMinutes() < 10 ? date.getMinutes() + "0" : date.getMinutes()) + " " + meridian
     const type = current.Type
     const velocity = current.Velocity_Major
+    let currentType
+    let currentSpeed
+
 
     const getPrompt = () => {
         const getDay = () => {
@@ -43,15 +46,27 @@ export default function Current (props) {
 
         const getCurrentType = () => {
             if ( velocity < -0.1 ) {
-                return "ebbing at "
+                return "ebb"
             } else if ( velocity > 0.1 ) {
-                return "flooding at "
+                return "flood"
             } else {
-                return "slack tide"
+                return "slack"
             }
         }
 
-        const currentType = getCurrentType()
+        currentType = getCurrentType()
+
+        const getCurrentTypePromptString = () => {
+            if (currentType === "slack") {
+                return "slack tide"
+            } else if (currentType === "flood") {
+                return "flooding at "
+            } else if (currentType === "ebb") {
+                return "ebbing at "
+            } else {
+                return "no current reported"
+            }
+        }
 
         const getCurrentSpeed = () => {
             if ( velocity < 0.1 && velocity > -0.1) {
@@ -61,7 +76,7 @@ export default function Current (props) {
             }
         }
 
-        const currentSpeed = getCurrentSpeed()
+        currentSpeed = getCurrentSpeed()
 
         return `At ${timeString} it is ${currentType}${currentSpeed}`
     }
@@ -69,8 +84,10 @@ export default function Current (props) {
     const prompt = getPrompt()
 
     return (
-        <div className="current" >
-            <p>{ prompt }</p>
-        </div>
+        <tr className="current" >
+            <td>{ timeString }</td>
+            <td>{ type ? type : currentType }</td>
+            <td>{ currentSpeed }</td>
+        </tr>
     )
 }

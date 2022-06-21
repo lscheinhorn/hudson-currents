@@ -227,14 +227,9 @@ export default function Data () {
         const getWeather = async () => {
             await fetch(`https://api.weather.gov/points/${userLocation.latitude},${userLocation.longitude}`)
                 .then(response => {
-                    console.log("getWeather")
                     if (!response.ok) {
-                        console.log("error response")
-    
                         throw Error(response.statusText);
                     } else {
-                        console.log("good response")
-    
                         return response.json()
                     }
                 })
@@ -297,45 +292,54 @@ export default function Data () {
 
     return (
         <div className="data" >
-        <h1>Predicted Currents</h1>
-        <h2>Station: George Washington Bridge</h2>
-        <div className="side-by-side">
-            <div className="container">
-                <h3>Last refresh: </h3>
-                <Clock format={'ddd MMM D'} timezone={'US/Eastern'}></Clock>
-                <div>
-                    <Clock format={'h:mm a'} timezone={'US/Eastern'}></Clock>
-                </div>                
-                <div>
-                    <button className="btn btn-primary" onClick={ reload }>Refresh</button>
+            <h1>Predicted Currents</h1>
+            <h2>Station: George Washington Bridge</h2>
+            <div className="side-by-side">
+                <div className="container">
+                    <h3>Last refresh: </h3>
+                    <Clock format={'ddd MMM D'} timezone={'US/Eastern'}></Clock>
+                    <div>
+                        <Clock format={'h:mm a'} timezone={'US/Eastern'}></Clock>
+                    </div>                
+                    <div>
+                        <button className="btn btn-primary" onClick={ reload }>Refresh</button>
+                    </div>
+                </div>
+                <div className="container">
+                    <h3>Current date:</h3>
+                    <div>
+                        <Clock format={'ddd MMM D'} ticking={true} timezone={'US/Eastern'}></Clock>
+                    </div>
+                    <div>
+                        <Clock className="large-bold" format={'h:mm a'} ticking={true} timezone={'US/Eastern'}></Clock>
+                    </div>
                 </div>
             </div>
-            <div className="container">
-                <h3>Current date:</h3>
-                <div>
-                    <Clock format={'ddd MMM D'} ticking={true} timezone={'US/Eastern'}></Clock>
-                </div>
-                <div>
-                    <Clock className="large-bold" format={'h:mm a'} ticking={true} timezone={'US/Eastern'}></Clock>
-                </div>
+            <div className="space-around">
+                <h4>Time interval</h4>
+                <select value={ queryParams.interval } onChange={ handleIntervalChange } title="Time interval">
+                        <option value="MAX_SLACK">Slack & Max Flood / Ebb</option>
+                        <option value="30">30 Minutes</option>
+                        <option value="60">1 Hour</option>
+                    </select>
             </div>
-        </div>
-        <div className="space-around">
-            <h4>Time interval</h4>
-            <select value={ queryParams.interval } onChange={ handleIntervalChange } title="Time interval">
-                    <option value="MAX_SLACK">Slack & Max Flood / Ebb</option>
-                    <option value="30">30 Minutes</option>
-                    <option value="60">1 Hour</option>
-                </select>
-        </div>
-        <div>
-            <p>{ weather.isLoading ? "Loading forecast..." : weather.forecastDaily[0].detailedForecast }</p>
-        </div>
-            
-            {
-                currents?.map(current => <Current current={ current } key={current.Time}/>)
-            }
-            
+            <div>
+                <p>{ weather.isLoading ? "Loading forecast..." : weather.forecastDaily[0].detailedForecast }</p>
+            </div>
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Tide</th>
+                        <th>Speed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        currents?.map((current, idx) => <Current current={ current } key={ idx }/>)
+                    }
+                </tbody>
+            </table>
         </div>
     )
 }
