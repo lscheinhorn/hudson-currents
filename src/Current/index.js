@@ -72,13 +72,13 @@ export default function Current (props) {
             if ( velocity < 0.1 && velocity > -0.1) {
                 return ""
             } else {
-                return Math.abs(velocity) + " knots"
+                return Math.abs(velocity)
             }
         }
 
         currentSpeed = getCurrentSpeed()
 
-        return `At ${timeString} it is ${currentType}${currentSpeed}`
+        return `At ${timeString} it is ${currentType}${currentSpeed} knots`
     }
     
     const prompt = getPrompt()

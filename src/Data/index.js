@@ -331,7 +331,7 @@ export default function Data () {
                     <tr>
                         <th>Time</th>
                         <th>Tide</th>
-                        <th>Speed</th>
+                        <th>Speed (knots)</th>
                     </tr>
                 </thead>
                 <tbody>
