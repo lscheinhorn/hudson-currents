@@ -6,8 +6,6 @@ export default function Current (props) {
     const getDate = () => {
         let arr = current.Time.split(/-|\s|:/)
         let date = new Date(arr[0], arr[1] -1, arr[2], arr[3], arr[4])
-        
-        console.log(date)
         return date
     }
     const date = getDate()
@@ -33,7 +31,6 @@ export default function Current (props) {
     const getPrompt = () => {
         const getDay = () => {
             const now = new Date()
-            console.log("now.getDate()", now.getDate())
             if ( now.getDate() === date.getDate() ) {
                 return "Today"
             } else if (now.getDate() === date.getDate() - 1 ) {
