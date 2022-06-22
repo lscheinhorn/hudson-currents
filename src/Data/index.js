@@ -376,26 +376,24 @@ export default function Data () {
             <div className="container">
                 <div id="day-picker" className="side-by-side">
                     <button className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
-                    <div className="large-bold">
-                        <h1>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h1>
+                    <div>
+                        <h4>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h4>
                     </div>
                     <button className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
                 </div>
-                <div className="border">
-                    
-                    <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
-                </div>
+                
+                <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
                 
             </div>
             <div className="space-around">
-                <h4>Time interval</h4>
+                <h2>Time interval</h2>
                 <select value={ queryParams.interval } onChange={ handleIntervalChange } title="Time interval">
                         <option value="MAX_SLACK">Slack & Max Flood / Ebb</option>
                         <option value="30">30 Minutes</option>
                         <option value="60">1 Hour</option>
                     </select>
             </div>
-            <h6>After 8:00 pm data below will be for the following day</h6>
+            <h4>After 8:00 pm data below will be for the following day</h4>
             <table className="table">
                 <thead>
                     <tr>
@@ -404,7 +402,7 @@ export default function Data () {
                         <th>Speed (knots)</th>
                         <th>Wind</th>
                         <th>Direction</th>
-                        <th>Forecast</th>
+                        {/*<th>Forecast</th>*/}
 
                     </tr>
                 </thead>

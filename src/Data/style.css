@@ -1,14 +1,23 @@
+.data {
+    width: 100%;
+}
+
 .side-by-side {
     display:flex;
     padding: 20px;
+    width: 100%;
+
 }
 
 .border {
     border: solid white 2px;
+    width: 100%;
+
 }
 
 .space-around {
     padding: 20px 10px;
+
 }
 
 .large-bold {
@@ -18,8 +27,14 @@
 
 #day-picker {
     justify-content: space-between;
+    width: 100%;
+
 }
 
 #day-picker h3 {
     font-size:larger;
+}
+
+table {
+
 }

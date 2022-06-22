@@ -148,7 +148,7 @@ export default function Current (props) {
             <td>{ currentSpeed }</td>
             <td>{ windSpeed }</td>
             <td>{ windDirection }</td>
-            <td>{ shortForecast }</td>
+            {/*<td>{ shortForecast }</td>*/}
 
         </tr>
     )
