@@ -10,6 +10,10 @@ export default function Data () {
     const [ domain ] = useState( "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?" )
     const [ weather, setWeather ] = useState({isLoading: true})
     const [ isMounted, setIsMounted ] = useState(false)
+    const [ dataDate, setDataDate ] = useState()
+    const [ dataDateStr, setDataDateStr ] = useState()
+
+    const [ detailedForecast, setDetailedForecast ] = useState()
 
     const [queryParams, setQueryParams] = useState({
         begin_date: null,
@@ -26,104 +30,104 @@ export default function Data () {
     })
 
 
+        const getDay = (date) => {
+            let day
+            switch ( date.getDay() ) {
+                case 0:
+                    day = "Sunday"
+                    break
+                case 1:
+                    day = "Monday"
+                    break
+                case 2:
+                    day = "Tuesday"
+                    break
+                case 3:
+                    day = "Wednesday"
+                    break
+                case 4:
+                    day = "Thursday"
+                    break
+                case 5:
+                    day = "Friday"
+                    break
+                case 6:
+                    day = "Saturday"
+                    break
+                default:
+                    day = ""
+            }
+            return day
+        }
+    
+        const getMonth = (date) => {
+            let month
+            switch ( date.getMonth() ) {
+                case 0:
+                    month = "January"
+                    break
+                case 1:
+                    month = "Febuary"
+                    break
+                case 2:
+                    month = "March"
+                    break
+                case 3:
+                    month = "April"
+                    break
+                case 4:
+                    month = "May"
+                    break
+                case 5:
+                    month = "June"
+                    break
+                case 6:
+                    month = "July"
+                    break
+                case 7:
+                    month = "August"
+                    break
+                case 8:
+                    month = "September"
+                    break
+                case 9:
+                    month = "October"
+                    break
+                case 10:
+                    month = "November"
+                    break
+                case 11:
+                    month = "December"
+                    break
+                default:
+                    month = ""
+            }
+            return month
+        }
+    
+        const getYear = (date) => {
+            const year = date.getFullYear().toString()
+            return year
+        }
+    
+        
+
+        const getDateTime = () => {
+            const now = new Date()
+            const year = now.getFullYear()
+            const month = (now.getMonth() + 1) < 10 ? "0" + (now.getMonth() + 1) : (now.getMonth() + 1)
+            const day = now.getDate()
+            const hour = now.getHours() < 10 ? "0" + now.getHours() : now.getHours()
+            const min = now.getMinutes()
+            const currentDate = month + '/' + day + '/' + year + '+' + hour + ':' + min
+            return currentDate
+        }
+        
+        const nowString = getDateTime()
+
+
     useEffect(() => {
 
-
-        // const getDay = () => {
-        //     let day
-        //     switch ( dateRefreshed.getDay() ) {
-        //         case 0:
-        //             day = "Sunday"
-        //             break
-        //         case 1:
-        //             day = "Monday"
-        //             break
-        //         case 2:
-        //             day = "Tuesday"
-        //             break
-        //         case 3:
-        //             day = "Wednesday"
-        //             break
-        //         case 4:
-        //             day = "Thursday"
-        //             break
-        //         case 5:
-        //             day = "Friday"
-        //             break
-        //         case 6:
-        //             day = "Saturday"
-        //             break
-        //         default:
-        //             day = ""
-        //     }
-        //     return day
-        // }
-    
-        // const getMonth = () => {
-        //     let month
-        //     switch ( dateRefreshed.getMonth() ) {
-        //         case 0:
-        //             month = "January"
-        //             break
-        //         case 1:
-        //             month = "Febuary"
-        //             break
-        //         case 2:
-        //             month = "March"
-        //             break
-        //         case 3:
-        //             month = "April"
-        //             break
-        //         case 4:
-        //             month = "May"
-        //             break
-        //         case 5:
-        //             month = "June"
-        //             break
-        //         case 6:
-        //             month = "July"
-        //             break
-        //         case 7:
-        //             month = "August"
-        //             break
-        //         case 8:
-        //             month = "September"
-        //             break
-        //         case 9:
-        //             month = "October"
-        //             break
-        //         case 10:
-        //             month = "November"
-        //             break
-        //         case 11:
-        //             month = "December"
-        //             break
-        //         default:
-        //             month = ""
-        //     }
-        //     return month
-        // }
-    
-        // const getYear = () => {
-        //     const year = dateRefreshed.getFullYear().toString()
-        //     return year
-        // }
-    
-        // let todaysDate = `${getDay()} ${getMonth()} ${dateRefreshed.getDate()}`
-        // console.log(todaysDate)
-
-        // const getDateTime = () => {
-        //     const now = new Date()
-        //     const year = now.getFullYear()
-        //     const month = (now.getMonth() + 1) < 10 ? "0" + (now.getMonth() + 1) : (now.getMonth() + 1)
-        //     const day = now.getDate()
-        //     const hour = now.getHours() < 10 ? "0" + now.getHours() : now.getHours()
-        //     const min = now.getMinutes()
-        //     const currentDate = month + '/' + day + '/' + year + '+' + hour + ':' + min
-        //     return currentDate
-        // }
-        
-        // const nowString = getDateTime()
 
 
         const getCurrentUrl = () => {
@@ -190,12 +194,28 @@ export default function Data () {
     }, [queryParams, domain]
     )
 
-    // useEffect(() => {
-    //     if (!isMounted) {
-    //         return
-    //     }
-    //     console.log(currents)
-    // },  [currents])
+    useEffect(() => {
+        if (!isMounted) {
+            return
+        }
+        const getDataDate = () => {
+            let date = new Date(currents[0].Time)
+            
+            return date
+        }
+
+        
+        const getDataDateStr = (date) => {
+            const newDate = new Date(date)
+            return `${getDay(newDate)} ${getMonth(newDate)} ${newDate.getDate()}`
+        }
+
+        setDataDate(getDataDate)
+        console.log("dataDate", dataDate)
+        setDataDateStr(getDataDateStr(dataDate))
+
+        console.log("currents", currents)
+    },  [currents])
 
     const handleIntervalChange = ({ target }) => {
         const value = target.value
@@ -281,10 +301,24 @@ export default function Data () {
             })
         }
         getForecast()
+
+
     }, [localForecastInfo] )
     
 
     const reload = () => window.location.reload(false)
+
+    useEffect(() => {
+        if(weather.isLoading) {
+            return
+        }
+        const getDetailedForecast = () => {
+            const filtered = weather.forecastDaily.filter(element => element.name === getDay(dataDate))
+            console.log(filtered, "filtered")
+            return filtered[0].detailedForecast
+        }
+        setDetailedForecast(getDetailedForecast)
+    }, [weather.forecastDaily])
 
     useEffect(() => {
         setIsMounted(true)
@@ -324,7 +358,8 @@ export default function Data () {
                     </select>
             </div>
             <div>
-                <p>{ weather.isLoading ? "Loading forecast..." : weather.forecastDaily[0].detailedForecast }</p>
+                <h4>Forecast for { dataDateStr }</h4>
+                <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
             </div>
             <table className="table">
                 <thead>
@@ -332,11 +367,19 @@ export default function Data () {
                         <th>Time</th>
                         <th>Tide</th>
                         <th>Speed (knots)</th>
+                        <th>Wind</th>
+                        <th>Direction</th>
+                        <th>Forecast</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        currents?.map((current, idx) => <Current current={ current } key={ idx }/>)
+                        currents?.map((current, key) => <Current 
+                                                            current={ current } 
+                                                            weather={ weather }
+                                                            key={ key }
+                                                        />)
                     }
                 </tbody>
             </table>

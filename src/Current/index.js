@@ -1,7 +1,15 @@
+import { useEffect, useState, useRef } from 'react'
 import './style.css'
 
 export default function Current (props) {
-    const { current } = props
+    const { current, weather } = props
+    const [ hourlyWeather, setHourlyWeather ] = useState()
+    const [ windSpeed, setWindSpeed ] = useState()
+    const [ windDirection, setWindDirection ] = useState()
+    const [ shortForecast, setShortForecast ] = useState()
+
+    const [ hour, setHour ] = useState()
+    const [ isMounted, setIsMounted ] = useState(false)
 
     const getDate = () => {
         let arr = current.Time.split(/-|\s|:/)
@@ -24,12 +32,65 @@ export default function Current (props) {
             return hours
         }
     }
-    const timeString = getHours() + ":" + (date.getMinutes() < 10 ? date.getMinutes() + "0" : date.getMinutes()) + " " + meridian
+    const timeString = getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + " " + meridian
     const type = current.Type
     const velocity = current.Velocity_Major
     let currentType
     let currentSpeed
 
+
+    useEffect(() => {
+        if(!isMounted) {
+            console.log("onMount")
+            
+            return
+        }
+        const getTimeStamp = (time) => {
+            const date = new Date(time)
+            const timeStamp = date.getTime()
+            return timeStamp
+        }
+        
+        const currentWeather = weather.forecastHourly.filter(({ startTime }) => {
+            const startTimeTimeStamp = getTimeStamp(startTime)
+            const currentTimeTimeStamp = getTimeStamp(current.Time)
+            return Math.abs(startTimeTimeStamp - currentTimeTimeStamp) < 1500000 
+        })
+    
+        setHourlyWeather(currentWeather[0])
+        console.log("current weather", currentWeather[0])
+        if ( hourlyWeather ) {
+            console.log("hourlyWeather", hourlyWeather)
+
+        }
+
+    }, [weather, current.Time])
+
+    useEffect(() => {
+        if (!isMounted) {
+            console.log('first')
+            return
+        }
+        console.log('second')
+
+        if( hourlyWeather) {
+            console.log("yup", hourlyWeather)
+            setWindSpeed(hourlyWeather.windSpeed)
+            setWindDirection(hourlyWeather.windDirection)
+            setHour(hourlyWeather.startTime)
+            setShortForecast(hourlyWeather.shortForecast)
+
+        } else {
+            setWindSpeed()
+            setWindDirection()
+            setHour()
+            setShortForecast()
+            setHour()
+            console.log("nope")
+        }
+        
+
+    }, [hourlyWeather])
 
     const getPrompt = () => {
         const getDay = () => {
@@ -83,11 +144,19 @@ export default function Current (props) {
     
     const prompt = getPrompt()
 
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
     return (
         <tr className="current" >
             <td>{ timeString }</td>
             <td>{ type ? type : currentType }</td>
             <td>{ currentSpeed }</td>
+            <td>{ windSpeed }</td>
+            <td>{ windDirection }</td>
+            <td>{ shortForecast }</td>
+
         </tr>
     )
 }
