@@ -105,10 +105,10 @@ export default function Data () {
             return month
         }
     
-        const getYear = (date) => {
-            const year = date.getFullYear().toString()
-            return year
-        }
+        // const getYear = (date) => {
+        //     const year = date.getFullYear().toString()
+        //     return year
+        // }
     
         
 
@@ -123,7 +123,7 @@ export default function Data () {
             return currentDate
         }
         
-        const nowString = getDateTime()
+        // const nowString = getDateTime()
 
 
     useEffect(() => {
@@ -211,10 +211,8 @@ export default function Data () {
         }
 
         setDataDate(getDataDate)
-        console.log("dataDate", dataDate)
         setDataDateStr(getDataDateStr(dataDate))
 
-        console.log("currents", currents)
     },  [currents])
 
     const handleIntervalChange = ({ target }) => {
@@ -314,7 +312,6 @@ export default function Data () {
         }
         const getDetailedForecast = () => {
             const filtered = weather.forecastDaily.filter(element => element.name === getDay(dataDate))
-            console.log(filtered, "filtered")
             return filtered[0].detailedForecast
         }
         setDetailedForecast(getDetailedForecast)

@@ -40,9 +40,7 @@ export default function Current (props) {
 
 
     useEffect(() => {
-        if(!isMounted) {
-            console.log("onMount")
-            
+        if(!isMounted) {            
             return
         }
         const getTimeStamp = (time) => {
@@ -58,7 +56,6 @@ export default function Current (props) {
         })
     
         setHourlyWeather(currentWeather[0])
-        console.log("current weather", currentWeather[0])
         if ( hourlyWeather ) {
             console.log("hourlyWeather", hourlyWeather)
 
@@ -68,13 +65,10 @@ export default function Current (props) {
 
     useEffect(() => {
         if (!isMounted) {
-            console.log('first')
             return
         }
-        console.log('second')
 
         if( hourlyWeather) {
-            console.log("yup", hourlyWeather)
             setWindSpeed(hourlyWeather.windSpeed)
             setWindDirection(hourlyWeather.windDirection)
             setHour(hourlyWeather.startTime)
@@ -86,7 +80,6 @@ export default function Current (props) {
             setHour()
             setShortForecast()
             setHour()
-            console.log("nope")
         }
         
 
