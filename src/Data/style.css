@@ -1,6 +1,9 @@
 .side-by-side {
     display:flex;
     padding: 20px;
+}
+
+.border {
     border: solid white 2px;
 }
 
@@ -11,4 +14,12 @@
 .large-bold {
     font-size: 150%;
     font: bold;
+}
+
+#day-picker {
+    justify-content: space-between;
+}
+
+#day-picker h3 {
+    font-size:larger;
 }

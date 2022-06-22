@@ -112,16 +112,16 @@ export default function Data () {
     
         
 
-        const getDateTime = () => {
-            const now = new Date()
-            const year = now.getFullYear()
-            const month = (now.getMonth() + 1) < 10 ? "0" + (now.getMonth() + 1) : (now.getMonth() + 1)
-            const day = now.getDate()
-            const hour = now.getHours() < 10 ? "0" + now.getHours() : now.getHours()
-            const min = now.getMinutes()
-            const currentDate = month + '/' + day + '/' + year + '+' + hour + ':' + min
-            return currentDate
-        }
+        // const getDateTime = () => {
+        //     const now = new Date()
+        //     const year = now.getFullYear()
+        //     const month = (now.getMonth() + 1) < 10 ? "0" + (now.getMonth() + 1) : (now.getMonth() + 1)
+        //     const day = now.getDate()
+        //     const hour = now.getHours() < 10 ? "0" + now.getHours() : now.getHours()
+        //     const min = now.getMinutes()
+        //     const currentDate = month + '/' + day + '/' + year + '+' + hour + ':' + min
+        //     return currentDate
+        // }
         
         // const nowString = getDateTime()
 
@@ -191,8 +191,7 @@ export default function Data () {
 
         getCurrents()
 
-    }, [queryParams, domain]
-    )
+    }, [queryParams, domain] )
 
     useEffect(() => {
         if (!isMounted) {
@@ -200,7 +199,6 @@ export default function Data () {
         }
         const getDataDate = () => {
             let date = new Date(currents[0].Time)
-            
             return date
         }
 
@@ -241,7 +239,7 @@ export default function Data () {
         if (!isMounted) {
             return
         }
-
+        console.log(userLocation)
         const getWeather = async () => {
             await fetch(`https://api.weather.gov/points/${userLocation.latitude},${userLocation.longitude}`)
                 .then(response => {
@@ -280,7 +278,10 @@ export default function Data () {
                         return response.json()
                     }
                 })
-                .then(json => json);
+                .then(json => {
+                    console.log("json hourly", json)
+                    return json
+                });
                 forecastHourly = forecastHourly["properties"]["periods"]
             let forecastDaily = await fetch(dailyUrl)
                 .then(response => {
@@ -290,7 +291,10 @@ export default function Data () {
                         return response.json()
                     }
                 })
-                .then(json => json);
+                .then(json => {
+                    console.log("json daily", json)
+                    return json
+                });
             forecastDaily = forecastDaily.properties.periods
             setWeather({
                 isLoading: false,
@@ -300,22 +304,41 @@ export default function Data () {
         }
         getForecast()
 
-
     }, [localForecastInfo] )
     
 
     const reload = () => window.location.reload(false)
 
+    const [ dailyIdx, setDailyIndex ] = useState(0)
+
+   const handleIndexInc = () => {
+        const length = weather.forecastDaily.length
+        console.log("length", length)
+        if ( dailyIdx < length - 1 ) {
+            setDailyIndex(dailyIdx + 1)
+        }
+   }
+
+   const handleIndexDec = () => {
+    if ( dailyIdx !== 0 ) {
+        setDailyIndex(dailyIdx - 1)
+    }
+}
+
     useEffect(() => {
         if(weather.isLoading) {
             return
         }
-        const getDetailedForecast = () => {
-            const filtered = weather.forecastDaily.filter(element => element.name === getDay(dataDate))
-            return filtered[0].detailedForecast
-        }
-        setDetailedForecast(getDetailedForecast)
-    }, [weather.forecastDaily])
+        // const getDetailedForecast = () => {
+        //     const filtered = weather.forecastDaily.filter(element => element.name === getDay(dataDate))
+        //     console.log('filtered', filtered)
+        //     return filtered[0].detailedForecast
+        // }
+        setDetailedForecast(weather.forecastDaily[Number(dailyIdx)].detailedForecast)
+        // console.log('weatherObj', weather)
+        console.log('forecastDaily', detailedForecast)
+
+    }, [weather.forecastDaily, dailyIdx])
 
     useEffect(() => {
         setIsMounted(true)
@@ -325,26 +348,44 @@ export default function Data () {
         <div className="data" >
             <h1>Predicted Currents</h1>
             <h2>Station: George Washington Bridge</h2>
-            <div className="side-by-side">
-                <div className="container">
-                    <h3>Last refresh: </h3>
-                    <Clock format={'ddd MMM D'} timezone={'US/Eastern'}></Clock>
-                    <div>
-                        <Clock format={'h:mm a'} timezone={'US/Eastern'}></Clock>
-                    </div>                
-                    <div>
-                        <button className="btn btn-primary" onClick={ reload }>Refresh</button>
+            <div className="border">
+                <div className="side-by-side">
+                    <div className="container">
+                        <h3>Last refresh: </h3>
+                        <Clock format={'ddd MMM D'} timezone={'US/Eastern'}></Clock>
+                        <div>
+                            <Clock format={'h:mm a'} timezone={'US/Eastern'}></Clock>
+                        </div>                
+                        <div>
+                            <button className="btn btn-primary" onClick={ reload }>Refresh</button>
+                        </div>
+                    </div>
+                    <div className="container">
+                        <h3>Current date:</h3>
+                        <div>
+                            <Clock format={'ddd MMM D'} ticking={true} timezone={'US/Eastern'}></Clock>
+                        </div>
+                        <div>
+                            <Clock className="large-bold" format={'h:mm a'} ticking={true} timezone={'US/Eastern'}></Clock>
+                        </div>
                     </div>
                 </div>
-                <div className="container">
-                    <h3>Current date:</h3>
-                    <div>
-                        <Clock format={'ddd MMM D'} ticking={true} timezone={'US/Eastern'}></Clock>
+                
+            </div>
+            
+            <div className="container">
+                <div id="day-picker" className="side-by-side">
+                    <button className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
+                    <div className="large-bold">
+                        <h1>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h1>
                     </div>
-                    <div>
-                        <Clock className="large-bold" format={'h:mm a'} ticking={true} timezone={'US/Eastern'}></Clock>
-                    </div>
+                    <button className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
                 </div>
+                <div className="border">
+                    
+                    <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
+                </div>
+                
             </div>
             <div className="space-around">
                 <h4>Time interval</h4>
@@ -354,11 +395,7 @@ export default function Data () {
                         <option value="60">1 Hour</option>
                     </select>
             </div>
-            <div>
-                <h6>After 8:00 pm forecast and currents will be for the following day</h6>
-                <h4>Forecast for { dataDateStr }</h4>
-                <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
-            </div>
+            <h6>After 8:00 pm data below will be for the following day</h6>
             <table className="table">
                 <thead>
                     <tr>
