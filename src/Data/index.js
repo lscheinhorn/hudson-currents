@@ -358,6 +358,7 @@ export default function Data () {
                     </select>
             </div>
             <div>
+                <h6>After 8:00 pm forecast and currents will be for the following day</h6>
                 <h4>Forecast for { dataDateStr }</h4>
                 <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
             </div>
