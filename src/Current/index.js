@@ -4,13 +4,23 @@ import './style.css'
 export default function Current (props) {
     const { current, weather } = props
     const [ hourlyWeather, setHourlyWeather ] = useState()
-    const [ windSpeed, setWindSpeed ] = useState("NA")
-    const [ windDirection, setWindDirection ] = useState("NA")
-    const [ shortForecast, setShortForecast ] = useState()
-
+    // const [ windSpeed, setWindSpeed ] = useState("NA")
+    // const [ windDirection, setWindDirection ] = useState("NA")
+    // const [ shortForecast, setShortForecast ] = useState()
     const [ hour, setHour ] = useState()
     const [ isMounted, setIsMounted ] = useState(false)
-    const [ currentData, setCurrentData ] = useState({velocity: ''})
+    // const [ currentData, setCurrentData ] = useState({velocity: ''})
+
+    let windSpeed = useRef()
+    let windDirection = useRef()
+    // let shortForecast = useRef()
+    let currentData = useRef({
+        timeString: "",
+        velocity: "",
+        type: "",
+        currentType: ""
+    })
+
 
     useEffect(() => {
         if(!isMounted) {
@@ -39,11 +49,11 @@ export default function Current (props) {
             }
         }
 
-        setCurrentData({
+        currentData.current = {
             timeString: getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + " " + meridian,
             type: current.Type,
             velocity: current.Velocity_Major
-        })
+        }
 
     }, [current])
 
@@ -53,9 +63,9 @@ export default function Current (props) {
         }
 
         const getCurrentType = () => {
-            if ( currentData.velocity < -0.1 ) {
+            if ( currentData.current.velocity < -0.1 ) {
                 return "ebb"
-            } else if ( currentData.velocity > 0.1 ) {
+            } else if ( currentData.current.velocity > 0.1 ) {
                 return "flood"
             } else {
                 return "slack"
@@ -63,10 +73,10 @@ export default function Current (props) {
         }
 
         const getCurrentSpeed = () => {
-            if ( currentData.velocity < 0.1 && currentData.velocity > -0.1) {
+            if ( currentData.current.velocity < 0.1 && currentData.current.velocity > -0.1) {
                 return ""
             } else {
-                return Math.abs(currentData.velocity)
+                return Math.abs(currentData.current.velocity)
             }
         }
 
@@ -99,16 +109,13 @@ export default function Current (props) {
 
         //     return `At ${currentData.timeString} it is ${currentData.currentType}${currentData.currentSpeed} knots`
         // }
-        setCurrentData(prev => {
-               return {
-                ...prev,
-                currentType: getCurrentType(),
-                currentSpeed: getCurrentSpeed(),
-                // prompt: getPrompt() 
-               } 
+        currentData.current.currentType = getCurrentType()
+        currentData.current.currentSpeed = getCurrentSpeed()
+        // currentData.current.prompt = getPrompt()
 
-            }
-        )
+
+            
+        
 
         console.log("currentData", currentData)
     }, [ currentData.velocity ])
@@ -148,22 +155,19 @@ export default function Current (props) {
             return
         }
 
-        if( hourlyWeather) {
-            setWindSpeed(hourlyWeather.windSpeed)
-            setWindDirection(hourlyWeather.windDirection)
-            setHour(hourlyWeather.startTime)
-            setShortForecast(hourlyWeather.shortForecast)
+            windSpeed.current = hourlyWeather.windSpeed ? hourlyWeather.windSpeed : ""
+            windDirection.current = hourlyWeather.windDirection ? hourlyWeather.windDirection : ""
+            setHour(hourlyWeather.startTime ? hourlyWeather.startTime : "")
+            // shortForecast.current = hourlyWeather.shortForecast ? hourlyWeather.shortForecast : ""
 
-        } else {
-            setWindSpeed()
-            setWindDirection()
-            setHour()
-            setShortForecast()
-            setHour()
-        }
-        console.log("windSpeed", windSpeed, "hourlyWeather", hourlyWeather)
         
     }, [hourlyWeather])
+
+    useEffect(() => {
+        if (isMounted) {
+            console.log("windSpeed", windSpeed)
+        }
+    }, [windSpeed])
 
 
     useEffect(() => {
@@ -172,12 +176,12 @@ export default function Current (props) {
 
     return (
         <tr className="current" >
-            <td>{ currentData.timeString ? currentData.timeString : "..." }</td>
-            <td>{ currentData.type ? currentData.type : currentData.currentType }</td>
-            <td>{ currentData.currentSpeed }</td>
-            <td>{ windSpeed }</td>
-            <td>{ windDirection }</td>
-            {/*<td>{ shortForecast }</td>*/}
+            <td>{ currentData.current.timeString }</td>
+            <td>{ currentData.current.type ? currentData.current.type : currentData.current.currentType }</td>
+            <td>{ currentData.current.currentSpeed }</td>
+            <td>{ windSpeed.current }</td>
+            <td>{ windDirection.current }</td>
+            {/*<td>{ shortForecast.current }</td>*/}
 
         </tr>
     )
