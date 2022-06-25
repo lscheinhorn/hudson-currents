@@ -163,10 +163,19 @@ export default function Current (props) {
         
     }, [hourlyWeather])
 
+    let currentD = currentData.current
+    let windS = windSpeed.current
+    let windD = windDirection.current
     useEffect(() => {
         if (isMounted) {
             console.log("windSpeed", windSpeed)
         }
+
+        currentD = currentData.current
+        windS = windSpeed.current
+        windD = windDirection.current
+
+
     }, [windSpeed])
 
 
@@ -176,11 +185,11 @@ export default function Current (props) {
 
     return (
         <tr className="current" >
-            <td>{ currentData.current.timeString }</td>
-            <td>{ currentData.current.type ? currentData.current.type : currentData.current.currentType }</td>
-            <td>{ currentData.current.currentSpeed }</td>
-            <td>{ windSpeed.current }</td>
-            <td>{ windDirection.current }</td>
+            <td>{ currentD.timeString }</td>
+            <td>{ currentD.type ? currentD.type : currentD.currentType }</td>
+            <td>{ currentD.currentSpeed }</td>
+            <td>{ windS }</td>
+            <td>{ windD }</td>
             {/*<td>{ shortForecast.current }</td>*/}
 
         </tr>
