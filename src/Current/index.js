@@ -4,7 +4,6 @@ import './style.css'
 export default function Current (props) {
     const { current, weather } = props
 
-
     const getDate = () => {
         let arr = current.Time.split(/-|\s|:/)
         let date = new Date(arr[0], arr[1] -1, arr[2], arr[3], arr[4])
@@ -76,6 +75,7 @@ export default function Current (props) {
             return ""
         } else {
             return Math.abs(velocity)
+
         }
     }
 
@@ -91,8 +91,6 @@ export default function Current (props) {
             <td>{ timeString }</td>
             <td>{ type ? type : currentType }</td>
             <td>{ currentSpeed }</td>
-            
-
         </tr>
     )
 }
