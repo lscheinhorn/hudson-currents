@@ -2,6 +2,7 @@ import Current from '../Current'
 import './style.css'
 import { useEffect, useState, useRef } from 'react'
 import Clock from 'react-live-clock'
+import { retryCall, getDay, getMonth } from "../helper"
 
 export default function Data () {
     const [ currents, setCurrents ] = useState()
@@ -12,8 +13,9 @@ export default function Data () {
     const [ isMounted, setIsMounted ] = useState(false)
     const [ dataDate, setDataDate ] = useState()
     const [ dataDateStr, setDataDateStr ] = useState()
-
     const [ detailedForecast, setDetailedForecast ] = useState()
+    const [ localForecastInfo, setLocalForecastInfo ] = useState()
+
 
     const [queryParams, setQueryParams] = useState({
         begin_date: null,
@@ -29,106 +31,7 @@ export default function Data () {
         interval: "MAX_SLACK"
     })
 
-
-        const getDay = (date) => {
-            let day
-            switch ( date.getDay() ) {
-                case 0:
-                    day = "Sunday"
-                    break
-                case 1:
-                    day = "Monday"
-                    break
-                case 2:
-                    day = "Tuesday"
-                    break
-                case 3:
-                    day = "Wednesday"
-                    break
-                case 4:
-                    day = "Thursday"
-                    break
-                case 5:
-                    day = "Friday"
-                    break
-                case 6:
-                    day = "Saturday"
-                    break
-                default:
-                    day = ""
-            }
-            return day
-        }
-    
-        const getMonth = (date) => {
-            let month
-            switch ( date.getMonth() ) {
-                case 0:
-                    month = "January"
-                    break
-                case 1:
-                    month = "Febuary"
-                    break
-                case 2:
-                    month = "March"
-                    break
-                case 3:
-                    month = "April"
-                    break
-                case 4:
-                    month = "May"
-                    break
-                case 5:
-                    month = "June"
-                    break
-                case 6:
-                    month = "July"
-                    break
-                case 7:
-                    month = "August"
-                    break
-                case 8:
-                    month = "September"
-                    break
-                case 9:
-                    month = "October"
-                    break
-                case 10:
-                    month = "November"
-                    break
-                case 11:
-                    month = "December"
-                    break
-                default:
-                    month = ""
-            }
-            return month
-        }
-    
-        const getYear = (date) => {
-            const year = date.getFullYear().toString()
-            return year
-        }
-    
-        
-
-        const getDateTime = () => {
-            const now = new Date()
-            const year = now.getFullYear()
-            const month = (now.getMonth() + 1) < 10 ? "0" + (now.getMonth() + 1) : (now.getMonth() + 1)
-            const day = now.getDate()
-            const hour = now.getHours() < 10 ? "0" + now.getHours() : now.getHours()
-            const min = now.getMinutes()
-            const currentDate = month + '/' + day + '/' + year + '+' + hour + ':' + min
-            return currentDate
-        }
-        
-        const nowString = getDateTime()
-
-
     useEffect(() => {
-
-
 
         const getCurrentUrl = () => {
             let urlArr = [ domain ]
@@ -148,20 +51,29 @@ export default function Data () {
 
 
         const getCurrents = async () => {
+            const start = new Date()
+            let end
             let data = await fetch(getCurrentUrl())
                 .then(response => response.json())
                 .then(json => json);
             data = data["current_predictions"]["cp"]
             setCurrents(data)
+            end = new Date()
+            console.log("getCurrents takes ", end.getTime() - start.getTime())
+
         }
 
 
         const getLocation = () => {
+            const start = new Date()
+            let end
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(setPosition, showError)
             } else {
                 alert("Geolocation is not supported by this browser.")
             }
+            end = new Date()
+            console.log("getLocation takes ", end.getTime() - start.getTime())
         }
         
         const setPosition = (position) => {
@@ -191,16 +103,19 @@ export default function Data () {
 
         getCurrents()
 
-    }, [queryParams, domain]
-    )
+        if ( !currents ) {
+            retryCall(getCurrents, currents, "currents")
+        }
+
+    }, [queryParams, domain] )
 
     useEffect(() => {
         if (!isMounted) {
             return
         }
+
         const getDataDate = () => {
             let date = new Date(currents[0].Time)
-            
             return date
         }
 
@@ -211,10 +126,8 @@ export default function Data () {
         }
 
         setDataDate(getDataDate)
-        console.log("dataDate", dataDate)
         setDataDateStr(getDataDateStr(dataDate))
 
-        console.log("currents", currents)
     },  [currents])
 
     const handleIntervalChange = ({ target }) => {
@@ -243,8 +156,9 @@ export default function Data () {
         if (!isMounted) {
             return
         }
-
         const getWeather = async () => {
+            const start = new Date()
+            let end
             await fetch(`https://api.weather.gov/points/${userLocation.latitude},${userLocation.longitude}`)
                 .then(response => {
                     if (!response.ok) {
@@ -255,13 +169,22 @@ export default function Data () {
                 })
                 .then(json => {
                     setLocalForecastInfo(json)
+                    end = new Date()
+                    console.log("getWeather takes ", end.getTime() - start.getTime())
+                })
+                .catch(error => {
+                    console.log(`There was an error fetching weather. Error message: ${error}`)
                 })
         }
         getWeather()
+        
+        if ( !localForecastInfo ) {
+            retryCall(getWeather, localForecastInfo, "localForecaseInfo")
+        }
+
     }, [userLocation] )
 
 
-    const [ localForecastInfo, setLocalForecastInfo ] = useState()
     
     
     useEffect( () => {
@@ -274,51 +197,120 @@ export default function Data () {
 
         const getForecast = async () => {
 
-            let forecastHourly = await fetch(hourlyUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw Error(response.statusText);
-                    } else {
-                        return response.json()
-                    }
-                })
-                .then(json => json);
-                forecastHourly = forecastHourly["properties"]["periods"]
-            let forecastDaily = await fetch(dailyUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw Error(response.statusText);
-                    } else {
-                        return response.json()
-                    }
-                })
-                .then(json => json);
-            forecastDaily = forecastDaily.properties.periods
-            setWeather({
-                isLoading: false,
-                forecastDaily,
-                forecastHourly
-            })
-        }
-        getForecast()
+            const getForecastHourly = () => {
+                const start = new Date()
+                let end
+                fetch(hourlyUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw Error(response.statusText);
+                        } else {
+                            return response.json()
+                        }
+                    })
+                    .then(json => {
+                        console.log("json hourly", json)
+                        setWeather((prev) => {
+                            return {
+                                ...prev,
+                                forecastHourly: json["properties"]["periods"]
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        console.log(`There was an error fetching your hourly forecast. Error message: ${error}`)
+                    })
 
+                end = new Date()
+                console.log("getForecastHourly takes ", end.getTime() - start.getTime())
+
+            }
+
+            getForecastHourly()
+
+
+            if ( !weather.forecastHourly ) {
+                retryCall(getForecastHourly, weather.forecastHourly, "weather.forecastHourly")
+            }
+
+
+           
+           
+            const getForecastDaily = () => {
+                const start = new Date()
+                let end
+                fetch(dailyUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw Error(response.statusText);
+                        } else {
+                            return response.json()
+                        }
+                    })
+                    .then(json => {
+                        console.log("json daily", json)
+                        setWeather((prev) => {
+                            return {
+                                ...prev,
+                                forecastDaily: json["properties"]["periods"],
+                                isLoading: false
+                            }
+                        })
+                    })
+                    .catch(error => {
+                        console.log(`There was a problem fetching your daily forecast. Error message ${error}`)
+                    })
+
+                
+                end = new Date()
+                console.log("getForecastDaily takes ", end.getTime() - start.getTime())
+
+            }
+
+            getForecastDaily()
+
+            if ( !weather.forecastDaily ) {
+                retryCall(getForecastDaily, weather.forecastDaily, "weather.forecastDaily")
+            }
+        }
+
+        getForecast()
 
     }, [localForecastInfo] )
     
 
     const reload = () => window.location.reload(false)
 
+    const [ dailyIdx, setDailyIndex ] = useState(0)
+
+   const handleIndexInc = () => {
+        const length = weather.forecastDaily.length
+        console.log("length", length)
+        if ( dailyIdx < length - 1 ) {
+            setDailyIndex(dailyIdx + 1)
+        }
+   }
+
+   const handleIndexDec = () => {
+    if ( dailyIdx !== 0 ) {
+        setDailyIndex(dailyIdx - 1)
+    }
+}
+
     useEffect(() => {
         if(weather.isLoading) {
             return
         }
-        const getDetailedForecast = () => {
-            const filtered = weather.forecastDaily.filter(element => element.name === getDay(dataDate))
-            console.log(filtered, "filtered")
-            return filtered[0].detailedForecast
+        
+        setDetailedForecast(weather.forecastDaily[Number(dailyIdx)].detailedForecast)
+
+    }, [weather.forecastDaily, dailyIdx])
+
+    useEffect(() => {
+        if(isMounted) {
+            console.log("detailedForecast", detailedForecast)
         }
-        setDetailedForecast(getDetailedForecast)
-    }, [weather.forecastDaily])
+    }, [detailedForecast])
 
     useEffect(() => {
         setIsMounted(true)
@@ -328,40 +320,54 @@ export default function Data () {
         <div className="data" >
             <h1>Predicted Currents</h1>
             <h2>Station: George Washington Bridge</h2>
-            <div className="side-by-side">
-                <div className="container">
-                    <h3>Last refresh: </h3>
-                    <Clock format={'ddd MMM D'} timezone={'US/Eastern'}></Clock>
-                    <div>
-                        <Clock format={'h:mm a'} timezone={'US/Eastern'}></Clock>
-                    </div>                
-                    <div>
-                        <button className="btn btn-primary" onClick={ reload }>Refresh</button>
+            <div className="border">
+                <div className="side-by-side">
+                    <div className="container">
+                        <h3>Last refresh: </h3>
+                        <Clock format={'ddd MMM D'} timezone={'US/Eastern'}></Clock>
+                        <div>
+                            <Clock format={'h:mm a'} timezone={'US/Eastern'}></Clock>
+                        </div>                
+                        <div>
+                            <button className="btn btn-primary" onClick={ reload }>Refresh</button>
+                        </div>
+                    </div>
+                    <div className="container">
+                        <h3>Current date:</h3>
+                        <div>
+                            <Clock format={'ddd MMM D'} ticking={true} timezone={'US/Eastern'}></Clock>
+                        </div>
+                        <div>
+                            <Clock className="large-bold" format={'h:mm a'} ticking={true} timezone={'US/Eastern'}></Clock>
+                        </div>
                     </div>
                 </div>
-                <div className="container">
-                    <h3>Current date:</h3>
-                    <div>
-                        <Clock format={'ddd MMM D'} ticking={true} timezone={'US/Eastern'}></Clock>
-                    </div>
-                    <div>
-                        <Clock className="large-bold" format={'h:mm a'} ticking={true} timezone={'US/Eastern'}></Clock>
-                    </div>
-                </div>
+                
             </div>
+            
+            <div className="container">
+                <div id="day-picker" className="side-by-side">
+                    <button className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
+                    <div>
+                        <h4>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h4>
+                    </div>
+                    <button className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
+                </div>
+                
+                <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
+                
+            </div>
+            {/*<input id="bdate" type="date" value="2017-06-01"></input>*/}
+
             <div className="space-around">
-                <h4>Time interval</h4>
+                <h2>Time interval</h2>
                 <select value={ queryParams.interval } onChange={ handleIntervalChange } title="Time interval">
                         <option value="MAX_SLACK">Slack & Max Flood / Ebb</option>
                         <option value="30">30 Minutes</option>
                         <option value="60">1 Hour</option>
                     </select>
             </div>
-            <div>
-                <h6>After 8:00 pm forecast and currents will be for the following day</h6>
-                <h4>Forecast for { dataDateStr }</h4>
-                <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
-            </div>
+            <h4>After 8:00 pm data below will be for the following day</h4>
             <table className="table">
                 <thead>
                     <tr>
@@ -370,7 +376,7 @@ export default function Data () {
                         <th>Speed (knots)</th>
                         <th>Wind</th>
                         <th>Direction</th>
-                        <th>Forecast</th>
+                        {/*<th>Forecast</th>*/}
 
                     </tr>
                 </thead>
