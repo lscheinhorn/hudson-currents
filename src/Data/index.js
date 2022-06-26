@@ -374,8 +374,8 @@ export default function Data () {
                         <th>Time</th>
                         <th>Tide</th>
                         <th>Speed (knots)</th>
-                        <th>Wind</th>
-                        <th>Direction</th>
+                       {/* <th>Wind</th>
+    <th>Direction</th>*/}
                         {/*<th>Forecast</th>*/}
 
                     </tr>
