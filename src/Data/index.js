@@ -23,6 +23,7 @@ export default function Data () {
         range: null,
         date: "today",
         station: "HUR0611",
+        stationStr: "George Washington Bridge"
         product: "currents_predictions",
         units: "english",
         time_zone: "lst_ldt",
@@ -142,10 +143,25 @@ export default function Data () {
 
     const handleStationChange = ({ target }) => {
         const value = target.value
+        let stationStr 
+        if ( value === "NYH1927") {
+            stationStr = "Hudson River Entrance"
+        } else if ( value === "NYH1928") {
+            stationStr = "Hudson River, Pier 92"
+        } else if ( value === "ACT3656") {
+            stationStr = "Grants Tomb"
+        } else if ( value === "NYH1930") {
+            stationStr = "George Washington Bridge"
+        } else if ( value === "NYH1930") {
+            stationStr = "Spuyten Duyvil"
+        } else if ( value === "ACT3671") {
+            stationStr = "Riverdale"
+        }
         setQueryParams( prevState => {
             return {
                 ...prevState,
-                station: value
+                station: value,
+                stationStr: stationStr
             }
         })
     }
