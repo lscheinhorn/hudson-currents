@@ -23,7 +23,7 @@ export default function Data () {
         range: null,
         date: "today",
         station: "HUR0611",
-        stationStr: "George Washington Bridge"
+        stationStr: "George Washington Bridge",
         product: "currents_predictions",
         units: "english",
         time_zone: "lst_ldt",
@@ -345,7 +345,18 @@ export default function Data () {
     return (
         <div className="data" >
             <h1>Predicted Currents</h1>
-            <h2>Station: George Washington Bridge</h2>
+            <div className="space-around">
+                <h2>Station</h2>
+                <select value={ queryParams.station } onChange={ handleStationChange } title="Time interval">
+                    <option value="NYH1927">Hudson River Entrance Depth: 7 feet</option>
+                    <option value="NYH1928">Hudson River, Pier 92 Depth: 6 feet</option>
+                    <option value="ACT3656">Grants Tomb Depth: 18 feet</option>
+                    <option value="HUR0611">George Washington Bridge Depth: 14 feet</option>
+                    <option value="NYH1930">Spuyten Duyvil Depth: 9 feet</option>
+                    <option value="ACT3671">Riverdale</option>
+                </select>
+                <p>Pier 92 is closest to Pier 66</p>
+            </div>
             <div className="border">
                 <div className="side-by-side">
                     <div className="container">
@@ -393,17 +404,7 @@ export default function Data () {
                         <option value="60">1 Hour</option>
                     </select>
             </div>
-            <div className="space-around">
-                <h2>Station</h2>
-                    <select value={ queryParams.station } onChange={ handleStationChange } title="Time interval">
-                        <option value="NYH1927">Hudson River Entrance Depth: 7 feet</option>
-                        <option value="NYH1928">Hudson River, Pier 92 Depth: 6 feet</option>
-                        <option value="ACT3656">Grants Tomb Depth: 18 feet</option>
-                        <option value="HUR0611">George Washington Bridge Depth: 14 feet</option>
-                        <option value="NYH1930">Spuyten Duyvil Depth: 9 feet</option>
-                        <option value="ACT3671">Riverdale</option>
-                    </select>
-            </div>
+            
             <h4>After 8:00 pm data below will be for the following day</h4>
             <table className="table">
                 <thead>
