@@ -140,6 +140,16 @@ export default function Data () {
         })
     }
 
+    const handleStationChange = ({ target }) => {
+        const value = target.value
+        setQueryParams( prevState => {
+            return {
+                ...prevState,
+                station: value
+            }
+        })
+    }
+
     // const handleDateChange = ({ target }) => {
     //     const value = target.value
     //     setQueryParams( prevState => {
@@ -361,10 +371,21 @@ export default function Data () {
 
             <div className="space-around">
                 <h2>Time interval</h2>
-                <select value={ queryParams.interval } onChange={ handleIntervalChange } title="Time interval">
+                    <select value={ queryParams.interval } onChange={ handleIntervalChange } title="Time interval">
                         <option value="MAX_SLACK">Slack & Max Flood / Ebb</option>
                         <option value="30">30 Minutes</option>
                         <option value="60">1 Hour</option>
+                    </select>
+            </div>
+            <div className="space-around">
+                <h2>Station</h2>
+                    <select value={ queryParams.station } onChange={ handleStationChange } title="Time interval">
+                        <option value="NYH1927">Hudson River Entrance Depth: 7 feet</option>
+                        <option value="NYH1928">Hudson River, Pier 92 Depth: 6 feet</option>
+                        <option value="ACT3656">Grants Tomb Depth: 18 feet</option>
+                        <option value="HUR0611">George Washington Bridge Depth: 14 feet</option>
+                        <option value="NYH1930">Spuyten Duyvil Depth: 9 feet</option>
+                        <option value="ACT3671">Riverdale</option>
                     </select>
             </div>
             <h4>After 8:00 pm data below will be for the following day</h4>
