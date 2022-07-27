@@ -2,14 +2,15 @@ import { useEffect, useState, useRef } from 'react'
 import './style.css'
 
 export default function Weather (props) {
-    const { current, weather } = props
+    const { weather } = props
 
     const getDate = () => {
-        let arr = current.Time.split(/-|\s|:/)
-        let date = new Date(arr[0], arr[1] -1, arr[2], arr[3], arr[4])
+        let arr = weather.startTime
+        let date = new Date(arr)
         return date
     }
     const date = getDate()
+    console.log("date", date)
     let meridian
     const getHours = () => {
         let hours = date.getHours()
@@ -29,29 +30,29 @@ export default function Weather (props) {
     // const type = current.Type
     // const velocity = current.Velocity_Major
 
-    const getTimeStamp = (time) => {
-        const date = new Date(time)
-        const timeStamp = date.getTime()
-        return timeStamp
-    }
-    let currentWeather
-    let hourlyWeather 
-    let windSpeed 
-    let windDirection 
-    let shortForecast 
+    // const getTimeStamp = (time) => {
+    //     const date = new Date(time)
+    //     const timeStamp = date.getTime()
+    //     return timeStamp
+    // }
+    // let currentWeather
+    // let hourlyWeather 
+    // let windSpeed 
+    // let windDirection 
+    // let shortForecast 
 
-    useEffect(() => {
-        currentWeather = weather.forecastHourly.filter(({ startTime }) => {
-            const startTimeTimeStamp = getTimeStamp(startTime)
-            const currentTimeTimeStamp = getTimeStamp(current.Time)
-            return Math.abs(startTimeTimeStamp - currentTimeTimeStamp) < 1500000 
-        })
-        hourlyWeather = currentWeather[0]
-        windSpeed = hourlyWeather.windSpeed
-        windDirection = hourlyWeather.windDirection
-        shortForecast = hourlyWeather.shortForecast
+    // useEffect(() => {
+    //     currentWeather = weather.forecastHourly.filter(({ startTime }) => {
+    //         const startTimeTimeStamp = getTimeStamp(startTime)
+    //         const currentTimeTimeStamp = getTimeStamp(current.Time)
+    //         return Math.abs(startTimeTimeStamp - currentTimeTimeStamp) < 1500000 
+    //     })
+    //     hourlyWeather = currentWeather[0]
+    //     windSpeed = hourlyWeather.windSpeed
+    //     windDirection = hourlyWeather.windDirection
+    //     shortForecast = hourlyWeather.shortForecast
     
-    }, [weather.forecastHourly, current.Time])
+    // }, [weather.forecastHourly, current.Time])
     
 
 
@@ -85,9 +86,10 @@ export default function Weather (props) {
     return (
         <tr className="current" >
             <td>{ timeString }</td>
-            <td>{ windSpeed }</td>
-            <td>{ windDirection }</td>
-            <td>{ shortForecast }</td>
+            <td>{ weather.windSpeed }</td>
+            <td>{ weather.windDirection }</td>
+            <td>{ weather.temperature }</td>
+            <td>{ weather.shortForecast }</td>
 
         </tr>
     )
