@@ -1,4 +1,6 @@
 import Current from '../Current'
+import Weather from '../Weather'
+
 import './style.css'
 import { useEffect, useState, useRef } from 'react'
 import Clock from 'react-live-clock'
@@ -15,6 +17,7 @@ export default function Data () {
     const [ dataDateStr, setDataDateStr ] = useState()
     const [ detailedForecast, setDetailedForecast ] = useState()
     const [ localForecastInfo, setLocalForecastInfo ] = useState()
+    const [ dataType, setDataType ] = useState("Currents")
 
 
     const [queryParams, setQueryParams] = useState({
@@ -318,10 +321,27 @@ export default function Data () {
    }
 
    const handleIndexDec = () => {
-    if ( dailyIdx !== 0 ) {
-        setDailyIndex(dailyIdx - 1)
+        if ( dailyIdx !== 0 ) {
+            setDailyIndex(dailyIdx - 1)
+        }
     }
-}
+
+    const handleDataToggle = () => {
+        const dataTypes = ["Currents", "Wind"]
+        for ( let i = 0 ; i < dataTypes.length ; i++ ) {
+            if ( dataTypes[i] === dataType ) {
+                if ( i === dataTypes.length - 1 ) {
+                    setDataType( dataTypes[0])
+                } else {
+                    setDataType( dataTypes[ i + 1 ])
+                }
+            }
+        }
+    }
+
+    const isHidden = (data) => {
+        return data === dataType ? "hidden" : ""
+    }
 
     useEffect(() => {
         if(weather.isLoading) {
@@ -347,7 +367,7 @@ export default function Data () {
             <h1>Predicted Currents</h1>
             <div className="space-around">
                 <h2>Station</h2>
-                <select value={ queryParams.station } onChange={ handleStationChange } title="Time interval">
+                <select value={ queryParams.station } onChange={ handleStationChange } title="Station">
                     <option value="NYH1927">Hudson River Entrance Depth: 7 feet</option>
                     <option value="NYH1928">Hudson River, Pier 92 Depth: 6 feet</option>
                     <option value="ACT3656">Grants Tomb Depth: 18 feet</option>
@@ -396,34 +416,73 @@ export default function Data () {
             </div>
             {/*<input id="bdate" type="date" value="2017-06-01"></input>*/}
 
-            <div className="space-around">
-                <h2>Time interval</h2>
-                    <select value={ queryParams.interval } onChange={ handleIntervalChange } title="Time interval">
-                        <option value="MAX_SLACK">Slack & Max Flood / Ebb</option>
-                        <option value="30">30 Minutes</option>
-                        <option value="60">1 Hour</option>
-                    </select>
+
+            <div className="container">
+                <div id="day-picker" className="side-by-side">
+                    <button className="btn btn-primary" onClick={ handleDataToggle }>{"<"}</button>
+                    <div>
+                        <h4>{ dataType }</h4>
+                    </div>
+                    <button className="btn btn-primary" onClick={ handleDataToggle }>{">"}</button>
+                </div>                
             </div>
+
+            { dataType === "Currents" ? 
+                <div>
+                    <div className="space-around" >
+                        <h2>Time interval</h2>
+                            <select value={ queryParams.interval } onChange={ handleIntervalChange } title="Time interval">
+                                <option value="MAX_SLACK">Slack & Max Flood / Ebb</option>
+                                <option value="30">30 Minutes</option>
+                                <option value="60">1 Hour</option>
+                            </select>
+                    </div>
+                    
+                    <h4>After 8:00 pm data below will be for the following day</h4>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Tide</th>
+                                <th>Speed (knots)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                currents?.map((current, key) => <Current 
+                                                                    current={ current } 
+                                                                    weather={ weather }
+                                                                    key={ key }
+                                                                />)
+                            }
+                        </tbody>
+                    </table>
+                </div> :
+
+                <div>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Speed</th>
+                                <th>Direction)</th>
+                                <th>Temperature)</th>
+                                <th>Forecast)</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                weather.forecastHourly?.map((weather, key) => <Weather 
+                                                                    weather={ weather }
+                                                                    key={ key }
+                                                                />)
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
             
-            <h4>After 8:00 pm data below will be for the following day</h4>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Tide</th>
-                        <th>Speed (knots)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        currents?.map((current, key) => <Current 
-                                                            current={ current } 
-                                                            weather={ weather }
-                                                            key={ key }
-                                                        />)
-                    }
-                </tbody>
-            </table>
         </div>
     )
 }
