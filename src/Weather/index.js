@@ -88,7 +88,6 @@ export default function Weather (props) {
             <td>{ timeString }</td>
             <td>{ weather.windSpeed }</td>
             <td>{ weather.windDirection }</td>
-            <td>{ weather.temperature }</td>
             <td>{ weather.shortForecast }</td>
 
         </tr>
