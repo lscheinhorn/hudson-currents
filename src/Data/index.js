@@ -1,4 +1,6 @@
 import Current from '../Current'
+import Weather from '../Weather'
+
 import './style.css'
 import { useEffect, useState, useRef } from 'react'
 import Clock from 'react-live-clock'
@@ -347,7 +349,7 @@ export default function Data () {
             <h1>Predicted Currents</h1>
             <div className="space-around">
                 <h2>Station</h2>
-                <select value={ queryParams.station } onChange={ handleStationChange } title="Time interval">
+                <select value={ queryParams.station } onChange={ handleStationChange } title="Station">
                     <option value="NYH1927">Hudson River Entrance Depth: 7 feet</option>
                     <option value="NYH1928">Hudson River, Pier 92 Depth: 6 feet</option>
                     <option value="ACT3656">Grants Tomb Depth: 18 feet</option>
