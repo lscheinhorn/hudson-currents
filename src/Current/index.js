@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { getDay } from "../helper"
 import './style.css'
 
 export default function Current (props) {
@@ -10,6 +11,7 @@ export default function Current (props) {
         return date
     }
     const date = getDate()
+    const day = getDay(date, true)
     let meridian
     const getHours = () => {
         let hours = date.getHours()
@@ -88,7 +90,7 @@ export default function Current (props) {
 
     return (
         <tr className="current" >
-            <td>{ timeString }</td>
+            <td>{ `${day} ${timeString}` }</td>
             <td>{ type ? type : currentType }</td>
             <td>{ currentSpeed }</td>
         </tr>

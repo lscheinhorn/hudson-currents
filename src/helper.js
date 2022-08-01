@@ -24,29 +24,29 @@ export const retryCall = (callback, state, stateStr) => {
 }
 
 
-export const getDay = (date) => {
+export const getDay = (date, short) => {
     let day
     switch ( date.getDay() ) {
         case 0:
-            day = "Sunday"
+            day = short ? "Sun" : "Sunday"
             break
         case 1:
-            day = "Monday"
+            day = short ? "Mon" : "Monday"
             break
         case 2:
-            day = "Tuesday"
+            day = short ? "Tue" : "Tuesday"
             break
         case 3:
-            day = "Wednesday"
+            day = short ? "Wed" : "Wednesday"
             break
         case 4:
-            day = "Thursday"
+            day = short ? "Thu" : "Thursday"
             break
         case 5:
-            day = "Friday"
+            day = short ? "Fri" : "Friday"
             break
         case 6:
-            day = "Saturday"
+            day = short ? "Sat" : "Saturday"
             break
         default:
             day = ""
@@ -116,3 +116,4 @@ export const getDateTime = () => {
     const currentDate = month + '/' + day + '/' + year + '+' + hour + ':' + min
     return currentDate
 }
+

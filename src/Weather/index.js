@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { getDay } from "../helper"
 import './style.css'
 
 export default function Weather (props) {
@@ -27,6 +28,11 @@ export default function Weather (props) {
         }
     }
     const timeString = getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + " " + meridian
+    
+    
+
+    const day = getDay(date, true)
+    
     // const type = current.Type
     // const velocity = current.Velocity_Major
 
@@ -85,7 +91,7 @@ export default function Weather (props) {
 
     return (
         <tr className="current" >
-            <td>{ timeString }</td>
+            <td>{ `${day} ${timeString}` }</td>
             <td>{ weather.windSpeed }</td>
             <td>{ weather.windDirection }</td>
             <td>{ weather.shortForecast }</td>
