@@ -9,7 +9,7 @@ import { retryCall, getDay, getMonth } from "../helper"
 export default function Data () {
     const [ currents, setCurrents ] = useState()
     const [ dateRefreshed ] = useState(new Date())
-    const [ userLocation, setUserLocation ] = useState()
+    // const [ userLocation, setUserLocation ] = useState()
     const [ domain ] = useState( "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?" )
     const [ weather, setWeather ] = useState({isLoading: true})
     const [ isMounted, setIsMounted ] = useState(false)
@@ -32,7 +32,9 @@ export default function Data () {
         time_zone: "lst_ldt",
         application: "luke_scheinhorn",
         format: "json",
-        interval: "MAX_SLACK"
+        interval: "MAX_SLACK",
+        latitude: "40.8496",
+        longitude: "-73.9498"
     })
 
     useEffect(() => {
@@ -55,51 +57,47 @@ export default function Data () {
 
 
         const getCurrents = async () => {
-            const start = new Date()
-            let end
             let data = await fetch(getCurrentUrl())
                 .then(response => response.json())
                 .then(json => json);
             data = data["current_predictions"]["cp"]
             setCurrents(data)
-            end = new Date()
-            console.log("getCurrents takes ", end.getTime() - start.getTime())
 
         }
 
 
-        const getLocation = () => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(setPosition, showError)
-            } else {
-                console.log("Geolocation is not supported by this browser.")
-            }
-        }
+        // const getLocation = () => {
+        //     if (navigator.geolocation) {
+        //         navigator.geolocation.getCurrentPosition(setPosition, showError)
+        //     } else {
+        //         console.log("Geolocation is not supported by this browser.")
+        //     }
+        // }
         
-        const setPosition = (position) => {
-            setUserLocation(position.coords)
-        }
+        // const setPosition = (position) => {
+        //     setUserLocation(position.coords)
+        // }
 
-        const showError = (error) => {
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    alert("User denied the request for Geolocation.")
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Location information is unavailable.")
-                    break;
-                case error.TIMEOUT:
-                    alert("The request to get user location timed out.")
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert("An unknown error occurred.")
-                    break;
-                default:
-                    alert("error")
-            }
-        }
+        // const showError = (error) => {
+        //     switch(error.code) {
+        //         case error.PERMISSION_DENIED:
+        //             alert("User denied the request for Geolocation.")
+        //             break;
+        //         case error.POSITION_UNAVAILABLE:
+        //             alert("Location information is unavailable.")
+        //             break;
+        //         case error.TIMEOUT:
+        //             alert("The request to get user location timed out.")
+        //             break;
+        //         case error.UNKNOWN_ERROR:
+        //             alert("An unknown error occurred.")
+        //             break;
+        //         default:
+        //             alert("error")
+        //     }
+        // }
 
-        getLocation()
+        // getLocation()
 
         getCurrents()
 
@@ -143,24 +141,40 @@ export default function Data () {
     const handleStationChange = ({ target }) => {
         const value = target.value
         let stationStr 
+        let latitude
+        let longitude
         if ( value === "NYH1927") {
             stationStr = "Hudson River Entrance"
+            latitude = "40.7076"
+            longitude = "-74.0253"
         } else if ( value === "NYH1928") {
             stationStr = "Hudson River, Pier 92"
+            latitude = "40.7707"
+            longitude = "-74.0028"
         } else if ( value === "ACT3656") {
             stationStr = "Grants Tomb"
+            latitude = "40.8080"
+            longitude = "-73.9677"
         } else if ( value === "HUR0611") {
             stationStr = "George Washington Bridge"
+            latitude = "40.8496"
+            longitude = "-73.9498"
         } else if ( value === "NYH1930") {
             stationStr = "Spuyten Duyvil"
+            latitude = "40.8779"
+            longitude = "-73.9287"
         } else if ( value === "ACT3671") {
             stationStr = "Riverdale"
+            latitude = "40.9000"
+            longitude = "-73.9167"
         }
         setQueryParams( prevState => {
             return {
                 ...prevState,
                 station: value,
-                stationStr: stationStr
+                stationStr: stationStr,
+                latitude: latitude,
+                longitude: longitude
             }
         })
     }
@@ -178,13 +192,11 @@ export default function Data () {
 
     
     useEffect(() => {
-        if (!isMounted) {
-            return
-        }
+        // if (!isMounted) {
+        //     return
+        // }
         const getWeather = async () => {
-            const start = new Date()
-            let end
-            await fetch(`https://api.weather.gov/points/${userLocation.latitude},${userLocation.longitude}`)
+            await fetch(`https://api.weather.gov/points/${queryParams.latitude},${queryParams.longitude}`)
                 .then(response => {
                     if (!response.ok) {
                         throw Error(response.statusText);
@@ -194,8 +206,6 @@ export default function Data () {
                 })
                 .then(json => {
                     setLocalForecastInfo(json)
-                    end = new Date()
-                    console.log("getWeather takes ", end.getTime() - start.getTime())
                 })
                 .catch(error => {
                     console.log(`There was an error fetching weather. Error message: ${error}`)
@@ -207,7 +217,7 @@ export default function Data () {
             retryCall(getWeather, localForecastInfo, "localForecaseInfo")
         }
 
-    }, [userLocation] )
+    }, [queryParams.latitude] )
 
 
     
@@ -223,8 +233,6 @@ export default function Data () {
         const getForecast = async () => {
 
             const getForecastHourly = () => {
-                const start = new Date()
-                let end
                 fetch(hourlyUrl)
                     .then(response => {
                         if (!response.ok) {
@@ -234,7 +242,6 @@ export default function Data () {
                         }
                     })
                     .then(json => {
-                        console.log("json hourly", json)
                         setWeather((prev) => {
                             return {
                                 ...prev,
@@ -246,8 +253,6 @@ export default function Data () {
                         console.log(`There was an error fetching your hourly forecast. Error message: ${error}`)
                     })
 
-                end = new Date()
-                console.log("getForecastHourly takes ", end.getTime() - start.getTime())
 
             }
 
@@ -262,8 +267,6 @@ export default function Data () {
            
            
             const getForecastDaily = () => {
-                const start = new Date()
-                let end
                 fetch(dailyUrl)
                     .then(response => {
                         if (!response.ok) {
@@ -273,7 +276,6 @@ export default function Data () {
                         }
                     })
                     .then(json => {
-                        console.log("json daily", json)
                         setWeather((prev) => {
                             return {
                                 ...prev,
@@ -287,8 +289,6 @@ export default function Data () {
                     })
 
                 
-                end = new Date()
-                console.log("getForecastDaily takes ", end.getTime() - start.getTime())
 
             }
 
