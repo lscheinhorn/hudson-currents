@@ -69,15 +69,11 @@ export default function Data () {
 
 
         const getLocation = () => {
-            const start = new Date()
-            let end
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(setPosition, showError)
             } else {
-                alert("Geolocation is not supported by this browser.")
+                console.log("Geolocation is not supported by this browser.")
             }
-            end = new Date()
-            console.log("getLocation takes ", end.getTime() - start.getTime())
         }
         
         const setPosition = (position) => {
@@ -153,7 +149,7 @@ export default function Data () {
             stationStr = "Hudson River, Pier 92"
         } else if ( value === "ACT3656") {
             stationStr = "Grants Tomb"
-        } else if ( value === "NYH1930") {
+        } else if ( value === "HUR0611") {
             stationStr = "George Washington Bridge"
         } else if ( value === "NYH1930") {
             stationStr = "Spuyten Duyvil"
