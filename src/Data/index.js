@@ -18,7 +18,7 @@ export default function Data () {
     const [ detailedForecast, setDetailedForecast ] = useState()
     const [ localForecastInfo, setLocalForecastInfo ] = useState()
     const [ dataType, setDataType ] = useState("Currents")
-
+    const [ dataTypeInactive, setDataTypeInactive ] = useState("Wind")
 
     const [queryParams, setQueryParams] = useState({
         begin_date: null,
@@ -323,15 +323,12 @@ export default function Data () {
     }
 
     const handleDataToggle = () => {
-        const dataTypes = ["Currents", "Wind"]
-        for ( let i = 0 ; i < dataTypes.length ; i++ ) {
-            if ( dataTypes[i] === dataType ) {
-                if ( i === dataTypes.length - 1 ) {
-                    setDataType( dataTypes[0])
-                } else {
-                    setDataType( dataTypes[ i + 1 ])
-                }
-            }
+        if ( dataType === "Currents" ) {
+            setDataType("Wind")
+            setDataTypeInactive("Currents")
+        } else {
+            setDataType("Currents")
+            setDataTypeInactive("Wind")
         }
     }
 
@@ -360,7 +357,7 @@ export default function Data () {
 
     return (
         <div className="data" >
-            <h1>Predicted Currents</h1>
+            <h1>Hudson River Currents</h1>
             <div className="space-around">
                 <h2>Station</h2>
                 <select value={ queryParams.station } onChange={ handleStationChange } title="Station">
@@ -373,6 +370,7 @@ export default function Data () {
                 </select>
                 <p>Pier 92 is closest to Pier 66</p>
             </div>
+           { /*
             <div className="border">
                 <div className="side-by-side">
                     <div className="container">
@@ -397,29 +395,35 @@ export default function Data () {
                 </div>
                 
             </div>
-            
-            <div className="container">
-                <div id="day-picker" className="side-by-side">
-                    <button className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
-                    <div>
-                        <h4>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h4>
+            */
+            }
+
+            <div className="container" >
+                <div className="border">
+                    <h2 id="forecast" >Forecast</h2>
+                    <div id="day-picker" className="side-by-side">
+                        <button className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
+                        <div>
+                            <h4>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h4>
+                        </div>
+                        <button className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
                     </div>
-                    <button className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
+                    
+                    <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
+                    
                 </div>
-                
-                <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
-                
             </div>
+            
             {/*<input id="bdate" type="date" value="2017-06-01"></input>*/}
 
 
             <div className="container">
                 <div id="day-picker" className="side-by-side">
-                    <button className="btn btn-primary" onClick={ handleDataToggle }>{"<"}</button>
+                    <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
                     <div>
                         <h4>{ dataType }</h4>
                     </div>
-                    <button className="btn btn-primary" onClick={ handleDataToggle }>{">"}</button>
+                    <button className="btn btn-primary" onClick={ handleDataToggle }>{ dataTypeInactive }</button>
                 </div>                
             </div>
 
@@ -455,6 +459,8 @@ export default function Data () {
                     </table>
                 </div> :
 
+
+                
                 <div>
                     <table className="table">
                         <thead>
