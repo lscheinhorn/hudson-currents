@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/gwb-currents/static/css/main.ef4c48fd.css",
-    "main.js": "/gwb-currents/static/js/main.13ec0317.js",
-    "static/js/787.532200fb.chunk.js": "/gwb-currents/static/js/787.532200fb.chunk.js",
-    "index.html": "/gwb-currents/index.html",
-    "main.ef4c48fd.css.map": "/gwb-currents/static/css/main.ef4c48fd.css.map",
-    "main.13ec0317.js.map": "/gwb-currents/static/js/main.13ec0317.js.map",
-    "787.532200fb.chunk.js.map": "/gwb-currents/static/js/787.532200fb.chunk.js.map"
+    "main.css": "/hudsoncurrents/static/css/main.ef4c48fd.css",
+    "main.js": "/hudsoncurrents/static/js/main.338d7985.js",
+    "static/js/787.532200fb.chunk.js": "/hudsoncurrents/static/js/787.532200fb.chunk.js",
+    "index.html": "/hudsoncurrents/index.html",
+    "main.ef4c48fd.css.map": "/hudsoncurrents/static/css/main.ef4c48fd.css.map",
+    "main.338d7985.js.map": "/hudsoncurrents/static/js/main.338d7985.js.map",
+    "787.532200fb.chunk.js.map": "/hudsoncurrents/static/js/787.532200fb.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ef4c48fd.css",
-    "static/js/main.13ec0317.js"
+    "static/js/main.338d7985.js"
   ]
 }
