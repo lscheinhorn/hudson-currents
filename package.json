@@ -1,7 +1,7 @@
 {
   "name": "noaa_data",
   "version": "0.1.0",
-  "homepage": "https://lscheinhorn.github.io/gwb-currents",
+  "homepage": "https://lscheinhorn.github.io/hudsoncurrents",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
