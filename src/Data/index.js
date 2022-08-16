@@ -8,7 +8,7 @@ import { retryCall, getDay, getMonth } from "../helper"
 
 export default function Data () {
     const [ currents, setCurrents ] = useState()
-    const [ dateRefreshed ] = useState(new Date())
+    // const [ dateRefreshed ] = useState(new Date())
     // const [ userLocation, setUserLocation ] = useState()
     const [ domain ] = useState( "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?" )
     const [ weather, setWeather ] = useState({isLoading: true})
@@ -23,7 +23,7 @@ export default function Data () {
     const [queryParams, setQueryParams] = useState({
         begin_date: null,
         end_date: null,
-        range: null,
+        range: 24,
         date: "today",
         station: "HUR0611",
         stationStr: "George Washington Bridge",
@@ -342,6 +342,15 @@ export default function Data () {
         }
         
         setDetailedForecast(weather.forecastDaily[Number(dailyIdx)].detailedForecast)
+        setQueryParams(( prev ) => {
+            const startTime = weather.forecastDaily[Number(dailyIdx)].startTime
+            const beginDate = startTime.slice(0, 4) + startTime.slice(5, 7) + startTime.slice(8, 10)
+            return {
+                ...prev,
+                begin_date: beginDate,
+                date: null
+            }
+        })
 
     }, [weather.forecastDaily, dailyIdx])
 
