@@ -366,7 +366,18 @@ export default function Data () {
 
     return (
         <div className="data" >
-            <h1>Hudson River Currents</h1>
+            <div className="container">
+                <div id="day-picker" className="side-by-side">
+                    <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
+                    
+                    <button className="btn btn-primary" onClick={ handleDataToggle }>Get { dataTypeInactive }</button>
+                </div>                
+            </div>
+            { dataType === "Currents" ? 
+                <h1>Hudson River Currents</h1> : 
+                <h1>Hudson River Wind</h1>
+            }
+            
             <div className="space-around">
                 <h2>Station</h2>
                 <select value={ queryParams.station } onChange={ handleStationChange } title="Station">
@@ -377,66 +388,12 @@ export default function Data () {
                     <option value="NYH1930">Spuyten Duyvil Depth: 9 feet</option>
                     <option value="ACT3671">Riverdale</option>
                 </select>
-                <p>Pier 92 is closest to Pier 66</p>
             </div>
-           { /*
-            <div className="border">
-                <div className="side-by-side">
-                    <div className="container">
-                        <h3>Last refresh: </h3>
-                        <Clock format={'ddd MMM D'} timezone={'US/Eastern'}></Clock>
-                        <div>
-                            <Clock format={'h:mm a'} timezone={'US/Eastern'}></Clock>
-                        </div>                
-                        <div>
-                            <button className="btn btn-primary" onClick={ reload }>Refresh</button>
-                        </div>
-                    </div>
-                    <div className="container">
-                        <h3>Current date:</h3>
-                        <div>
-                            <Clock format={'ddd MMM D'} ticking={true} timezone={'US/Eastern'}></Clock>
-                        </div>
-                        <div>
-                            <Clock className="large-bold" format={'h:mm a'} ticking={true} timezone={'US/Eastern'}></Clock>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            */
-            }
-
-            <div className="container" >
-                <div className="border">
-                    <h2 id="forecast" >Forecast</h2>
-                    <div id="day-picker" className="side-by-side">
-                        <button className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
-                        <div>
-                            <h4>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h4>
-                        </div>
-                        <button className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
-                    </div>
-                    
-                    <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
-                    
-                </div>
-            </div>
+           
             
-            {/*<input id="bdate" type="date" value="2017-06-01"></input>*/}
-
-
-            <div className="container">
-                <div id="day-picker" className="side-by-side">
-                    <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
-                    <div>
-                        <h4>{ dataType }</h4>
-                    </div>
-                    <button className="btn btn-primary" onClick={ handleDataToggle }>{ dataTypeInactive }</button>
-                </div>                
-            </div>
-
+            
             { dataType === "Currents" ? 
+                
                 <div>
                     <div className="space-around" >
                         <h2>Time interval</h2>
@@ -446,8 +403,25 @@ export default function Data () {
                                 <option value="60">1 Hour</option>
                             </select>
                     </div>
+                    <div className="container" >
+                        <div className="space-around">
+                            <div className="border">
+
+                                <h2 id="forecast" >Forecast</h2>
+                                <div id="day-picker" className="side-by-side">
+                                    <button className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
+                                    <div>
+                                        <h4>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h4>
+                                    </div>
+                                    <button className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
+                                </div>
+                                
+                                <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <h4>After 8:00 pm data below will be for the following day</h4>
+                    
                     <table className="table">
                         <thead>
                             <tr>
@@ -492,7 +466,8 @@ export default function Data () {
                     </table>
                 </div>
             }
-            
+            <p>Data is fetched from NOAA Tides and Currents API</p>
+            <p>Created by: Luke Scheinhorn</p>
         </div>
     )
 }
