@@ -422,7 +422,7 @@ export default function Data () {
                     </div>
                     
                     
-                    <table className="table">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Time</th>
@@ -445,14 +445,13 @@ export default function Data () {
 
                 
                 <div>
-                    <table className="table">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Time</th>
                                 <th>Speed</th>
                                 <th>Direction</th>
                                 <th>Forecast</th>
-
                             </tr>
                         </thead>
                         <tbody>

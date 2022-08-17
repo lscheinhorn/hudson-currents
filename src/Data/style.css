@@ -1,49 +1,54 @@
-.data {
-    width: 100%;
+p {
+    font-size: smaller;
 }
 
-.table {
+table {
     width: 100%;
+    overflow: scroll;
 }
+
+.data {
+
+    width: 100vw;
+}
+
 
 .side-by-side {
+
     display:flex;
     padding: 20px;
-    width: 100%;
+    width: 100vw;
 
 }
 
 .border {
+
     border: solid white 2px;
     width: 100%;
 
 }
 
 .space-around {
+
     padding: 20px 10px;
 
 }
 
 .large-bold {
+
     font-size: 120%;
     font: bold;
 }
 
 #day-picker {
+
     justify-content: space-between;
     width: 100%;
 
 }
 
-#day-picker h3 {
-    font-size:larger;
-}
-
-table {
-
-}
-
 #forecast {
+
     color: #282c34;
     background-color: white;;
 }
