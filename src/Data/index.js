@@ -381,11 +381,11 @@ export default function Data () {
             <div className="space-around">
                 <h2>Station</h2>
                 <select value={ queryParams.station } onChange={ handleStationChange } title="Station">
-                    <option value="NYH1927">Hudson River Entrance Depth: 7 feet</option>
-                    <option value="NYH1928">Hudson River, Pier 92 Depth: 6 feet</option>
-                    <option value="ACT3656">Grants Tomb Depth: 18 feet</option>
-                    <option value="HUR0611">George Washington Bridge Depth: 14 feet</option>
-                    <option value="NYH1930">Spuyten Duyvil Depth: 9 feet</option>
+                    <option value="NYH1927">Hudson River Entrance Depth: 7 ft</option>
+                    <option value="NYH1928">Hudson River, Pier 92 Depth: 6 ft</option>
+                    <option value="ACT3656">Grants Tomb Depth: 18 ft</option>
+                    <option value="HUR0611">George Washington Bridge Depth: 14 ft</option>
+                    <option value="NYH1930">Spuyten Duyvil Depth: 9 ft</option>
                     <option value="ACT3671">Riverdale</option>
                 </select>
             </div>
