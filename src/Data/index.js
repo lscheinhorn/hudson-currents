@@ -167,6 +167,34 @@ export default function Data () {
             stationStr = "Riverdale"
             latitude = "40.9000"
             longitude = "-73.9167"
+        } else if ( value === "ACT3676") {
+            stationStr = "Mount St. Vincent College, SW of: Depth: 15 feet"
+            latitude = "40.9070"
+            longitude = "-73.9080"
+        } else if ( value === "ACT3681") {
+            stationStr = "Dobbs Ferry"
+            latitude = "41.0167"
+            longitude = "-73.8833"
+        } else if ( value === "HUR0502") {
+            stationStr = "Tappan Zee Bridge Depth: 5 feet"
+            latitude = "41.0674"
+            longitude = "-73.8815"
+        } else if ( value === "ACT3691") {
+            stationStr = "Tarrytown"
+            latitude = "41.0833"
+            longitude = "-73.8833"
+        } else if ( value === "ACT3696") {
+            stationStr = "Ossining"
+            latitude = "41.1667"
+            longitude = "-73.9000"
+        } else if ( value === "HUR0401") {
+            stationStr = "Haverstraw Depth: 4 feet"
+            latitude = "41.2092"
+            longitude = "-73.9513"
+        } else if ( value === "HUR0503") {
+            stationStr = "Stony Point Depth: 14 feet"
+            latitude = "41.2416"
+            longitude = "-73.9667"
         }
         setQueryParams( prevState => {
             return {
@@ -387,6 +415,13 @@ export default function Data () {
                     <option value="HUR0611">George Washington Bridge Depth: 14 ft</option>
                     <option value="NYH1930">Spuyten Duyvil Depth: 9 ft</option>
                     <option value="ACT3671">Riverdale</option>
+                    <option value="ACT3676">Mount St. Vincent College</option>
+                    <option value="ACT3681">Dobbs Ferry</option>
+                    <option value="HUR0502">Tappan Zee Bridge (Depth 5ft)</option>
+                    <option value="ACT3691">Tarrytown</option>
+                    <option value="ACT3696">Ossining</option>
+                    <option value="HUR0401">Haverstraw</option>
+                    <option value="HUR0503">Stony Point</option>
                 </select>
             </div>
            
