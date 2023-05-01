@@ -143,7 +143,44 @@ export default function Data () {
         let stationStr 
         let latitude
         let longitude
-        if ( value === "NYH1927") {
+        if ( value === "n03020") {
+            stationStr = " The Narrows Depth: 11 feet"
+            latitude = "40.6064"
+            longitude = "-74.0380"
+        } else if ( value === "NYH1920") {
+            stationStr = "Brooklyn Bridge Depth: 8 feet"
+            latitude = "40.7060"
+            longitude = "-74.0540"
+        } else if ( value === "ACT3621") {
+            stationStr = "Bay Ridge, west of, Depth: 22 feet"
+            latitude = "40.6257"
+            longitude = "-74.0540"
+        } else 
+        if ( value === "NYH1917") {
+            stationStr = "Gowanus Bay Entrance Depth: 15 feet"
+            latitude = "40.6625"
+            longitude = "-74.0181"
+        } else if ( value === "NYH1918") {
+            stationStr = "Red Hook Channel Depth: 3 feet"
+            latitude = "40.6723"
+            longitude = "-74.0239"
+        } else if ( value === "NYH1914") {
+            stationStr = "Constable Hook Approach Depth: 9 feet"
+            latitude = "40.6507"
+            longitude = "-74.0606"
+        } else if ( value === "n05010") {
+            stationStr = "Gowanus Flats LBB 32, Depth: 11 feet"
+            latitude = "40.6721"
+            longitude = "-74.0399"
+        } else if ( value === "ACT3646") {
+            stationStr = "Statue of Liberty, east of"
+            latitude = "40.6900°"
+            longitude = "-74.0300°"
+        } else if ( value === "NYH1919") {
+            stationStr = "Dimond Reef Depth: 11 feet"
+            latitude = "40.6979"
+            longitude = "-74.0213"
+        } else if ( value === "NYH1927") {
             stationStr = "Hudson River Entrance"
             latitude = "40.7076"
             longitude = "-74.0253"
@@ -409,6 +446,16 @@ export default function Data () {
             <div className="space-around">
                 <h2>Station</h2>
                 <select value={ queryParams.station } onChange={ handleStationChange } title="Station">
+                    <option value="n03020">The Narrows</option>
+                    <option value="NYH1920">Brooklyn Bridge</option>
+                    <option value="ACT3621">Bay Ridge, west of</option>
+                    <option value="NYH1917">Gowanus Bay Entrance</option>
+                    <option value="NYH1918">Red Hook Channel Depth: 3 feet</option>
+                    <option value="NYH1915">Robbins Reef Light</option>
+                    <option value="NYH1914">Constable Hook Approach</option>
+                    <option value="n05010">Gowanus Flats LBB 32</option>
+                    <option value="ACT3646">Statue of Liberty, east of</option>
+                    <option value="NYH1919">Dimond Reef</option>
                     <option value="NYH1927">Hudson River Entrance Depth: 7 ft</option>
                     <option value="NYH1928">Hudson River, Pier 92 Depth: 6 ft</option>
                     <option value="ACT3656">Grants Tomb Depth: 18 ft</option>
