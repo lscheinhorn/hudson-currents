@@ -25,17 +25,18 @@ export default function Data () {
         end_date: null,
         range: 24,
         date: "today",
-        station: "HUR0611",
-        stationStr: "George Washington Bridge",
+        station: "NYH1928",
+        stationStr: "Hudson River, Pier 92",
         product: "currents_predictions",
         units: "english",
         time_zone: "lst_ldt",
         application: "luke_scheinhorn",
         format: "json",
         interval: "MAX_SLACK",
-        latitude: "40.8496",
-        longitude: "-73.9498"
+        latitude: "40.7707",
+        longitude: "-74.0028"
     })
+
 
     useEffect(() => {
 
