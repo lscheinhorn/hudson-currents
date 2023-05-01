@@ -472,7 +472,8 @@ export default function Data () {
                     <option value="HUR0503">Stony Point</option>
                 </select>
             </div>
-           
+            <a href={`http://www.google.com/maps/place/${queryParams.latitude},${queryParams.longitude}`} target="_blank" rel="noreferrer" >CLICK HERE TO SEE THIS STATION ON A MAP</a>
+
             
             
             { dataType === "Currents" ? 
