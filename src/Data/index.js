@@ -151,7 +151,7 @@ export default function Data () {
         } else if ( value === "NYH1920") {
             stationStr = "Brooklyn Bridge Depth: 8 feet"
             latitude = "40.7060"
-            longitude = "-74.0540"
+            longitude = "-73.9977"
         } else if ( value === "ACT3621") {
             stationStr = "Bay Ridge, west of, Depth: 22 feet"
             latitude = "40.6257"
@@ -165,6 +165,10 @@ export default function Data () {
             stationStr = "Red Hook Channel Depth: 3 feet"
             latitude = "40.6723"
             longitude = "-74.0239"
+        } else if ( value === "NYH1915") {
+            stationStr = "Robbins Reef Light, 0.6 nm E of, Depth: 11 feet"
+            latitude = "40.6552"
+            longitude = "-74.0507"
         } else if ( value === "NYH1914") {
             stationStr = "Constable Hook Approach Depth: 9 feet"
             latitude = "40.6507"
@@ -175,8 +179,8 @@ export default function Data () {
             longitude = "-74.0399"
         } else if ( value === "ACT3646") {
             stationStr = "Statue of Liberty, east of"
-            latitude = "40.6900°"
-            longitude = "-74.0300°"
+            latitude = "40.6900"
+            longitude = "-74.0300"
         } else if ( value === "NYH1919") {
             stationStr = "Dimond Reef Depth: 11 feet"
             latitude = "40.6979"
@@ -472,7 +476,7 @@ export default function Data () {
                     <option value="HUR0503">Stony Point</option>
                 </select>
             </div>
-            <a href={`http://www.google.com/maps/place/${queryParams.latitude},${queryParams.longitude}`} target="_blank" rel="noreferrer" >CLICK HERE TO SEE THIS STATION ON A MAP</a>
+            <a href={`http://www.google.com/maps/place/${queryParams.latitude},${queryParams.longitude}/@${queryParams.latitude},${queryParams.longitude},13z`} target="_blank" rel="noreferrer" >CLICK HERE TO SEE THIS STATION ON A MAP</a>
 
             
             
