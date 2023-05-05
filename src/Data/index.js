@@ -491,11 +491,11 @@ export default function Data () {
 
                                 <h2 id="forecast" >Forecast</h2>
                                 <div id="day-picker" className="side-by-side">
-                                    <button className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
+                                    <button aria-label="Back 12 hours" className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
                                     <div>
                                         <h4>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h4>
                                     </div>
-                                    <button className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
+                                    <button aria-label="Forward 12 hours" className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
                                 </div>
                                 
                                 <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
