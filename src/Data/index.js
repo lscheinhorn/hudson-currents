@@ -436,13 +436,7 @@ export default function Data () {
 
     return (
         <div className="data" >
-            <div className="container">
-                <div id="day-picker" className="side-by-side">
-                    <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
-                    
-                    <button className="btn btn-primary" onClick={ handleDataToggle }>Get { dataTypeInactive }</button>
-                </div>                
-            </div>
+            
             { dataType === "Currents" ? 
                 <h1>Hudson River Currents</h1> : 
                 <h1>Hudson River Wind</h1>
@@ -476,7 +470,7 @@ export default function Data () {
                     <option value="HUR0503">Stony Point</option>
                 </select>
             </div>
-            <a href={`http://www.google.com/maps/place/${queryParams.latitude},${queryParams.longitude}/@${queryParams.latitude},${queryParams.longitude},13z`} target="_blank" rel="noreferrer" >CLICK HERE TO SEE THIS STATION ON A MAP</a>
+            <a className="btn btn-primary" href={`http://www.google.com/maps/place/${queryParams.latitude},${queryParams.longitude}/@${queryParams.latitude},${queryParams.longitude},13z`} target="_blank" rel="noreferrer" >VIEW STATION LOCATION</a>
 
             
             
@@ -506,6 +500,13 @@ export default function Data () {
                                 
                                 <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
                             </div>
+                        </div>
+                        <div className="container">
+                            <div id="day-picker" className="side-by-side">
+                                <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
+                                
+                                <button className="btn btn-primary" onClick={ handleDataToggle }>Get { dataTypeInactive }</button>
+                            </div>                
                         </div>
                     </div>
                     
