@@ -88,12 +88,20 @@ export default function Weather (props) {
 
     // // let currentSpeed = getCurrentSpeed()
 
-    console.log("weather", weather)
+    const mphToKnots = (speed) => {
+        const strNum = speed.slice(0, 2)
+        console.log("strNum", strNum)
+        const num = Number(strNum)
+        const knots = Math.round(num/1.151)
+
+        return knots
+    }
+    mphToKnots(weather.windSpeed)
 
     return (
         <tr className="current" >
             <td>{ `${day} ${timeString}` }</td>
-            <td>{ weather.windSpeed }</td>
+            <td>{ mphToKnots(weather.windSpeed) }</td>
             <td>{ weather.windDirection }</td>
             <td>{ weather.shortForecast }</td>
             <td>{`${weather.temperature}°${weather.temperatureUnit}`}</td>

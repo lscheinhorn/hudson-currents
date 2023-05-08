@@ -9,6 +9,7 @@ table {
 
 td {
     white-space: nowrap;
+    padding: 5px;
 }
 
 .table {

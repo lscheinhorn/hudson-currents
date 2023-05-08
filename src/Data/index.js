@@ -544,7 +544,7 @@ export default function Data () {
                             <thead>
                                 <tr>
                                     <th>Time</th>
-                                    <th>Speed</th>
+                                    <th>Speed (knots)</th>
                                     <th>Direction</th>
                                     <th>Forecast</th>
                                     <th>Temperature</th>
