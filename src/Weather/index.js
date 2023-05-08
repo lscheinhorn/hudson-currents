@@ -88,6 +88,7 @@ export default function Weather (props) {
 
     // // let currentSpeed = getCurrentSpeed()
 
+    console.log("weather", weather)
 
     return (
         <tr className="current" >
@@ -95,6 +96,10 @@ export default function Weather (props) {
             <td>{ weather.windSpeed }</td>
             <td>{ weather.windDirection }</td>
             <td>{ weather.shortForecast }</td>
+            <td>{`${weather.temperature}°${weather.temperatureUnit}`}</td>
+            <td>{`${weather.probabilityOfPrecipitation.value}%`}</td>
+
+
 
         </tr>
     )

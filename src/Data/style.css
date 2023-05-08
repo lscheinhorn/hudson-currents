@@ -4,7 +4,12 @@ p {
 
 table {
     width: 100%;
-    overflow: scroll;
+    overflow-x: auto;
+}
+
+.table {
+    min-width: auto;
+    overflow-x: auto;
 }
 
 .data {

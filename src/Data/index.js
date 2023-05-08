@@ -533,30 +533,35 @@ export default function Data () {
                 
                 
                 <div>
-                <div className="container">
-                    <div id="day-picker" className="side-by-side">
-                        <button className="btn btn-primary" onClick={ handleDataToggle }>Get { dataTypeInactive }</button>
-                        <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
-                    </div>                
-                </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Speed</th>
-                                <th>Direction</th>
-                                <th>Forecast</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                weather.forecastHourly?.map((weather, key) => <Weather 
-                                                                    weather={ weather }
-                                                                    key={ key }
-                                                                />)
-                            }
-                        </tbody>
-                    </table>
+                    <div className="container">
+                        <div id="day-picker" className="side-by-side">
+                            <button className="btn btn-primary" onClick={ handleDataToggle }>Get { dataTypeInactive }</button>
+                            <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
+                        </div>                
+                    </div>
+                    <div className="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Speed</th>
+                                    <th>Direction</th>
+                                    <th>Forecast</th>
+                                    <th>Temperature</th>
+                                    <th>Precipitation</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    weather.forecastHourly?.map((weather, key) => <Weather 
+                                                                        weather={ weather }
+                                                                        key={ key }
+                                                                    />)
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             }
             <p>Data is fetched from NOAA Tides and Currents API</p>
