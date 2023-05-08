@@ -530,9 +530,15 @@ export default function Data () {
                     </table>
                 </div> :
 
-
+                
                 
                 <div>
+                <div className="container">
+                    <div id="day-picker" className="side-by-side">
+                        <button className="btn btn-primary" onClick={ handleDataToggle }>Get { dataTypeInactive }</button>
+                        <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
+                    </div>                
+                </div>
                     <table>
                         <thead>
                             <tr>
