@@ -269,6 +269,7 @@ export default function Data () {
             await fetch(`https://api.weather.gov/points/${queryParams.latitude},${queryParams.longitude}`)
                 .then(response => {
                     if (!response.ok) {
+                        console.log("There was an error fetching weather", response.statusText)
                         throw Error(response.statusText);
                     } else {
                         return response.json()
@@ -299,13 +300,18 @@ export default function Data () {
 
         let dailyUrl = localForecastInfo["properties"]["forecast"]
         let hourlyUrl = localForecastInfo["properties"]["forecastHourly"]
+        
+        console.log("localForecastInfo", localForecastInfo)
 
+        console.log("hourlyUrl", hourlyUrl)
         const getForecast = async () => {
 
             const getForecastHourly = () => {
                 fetch(hourlyUrl)
                     .then(response => {
                         if (!response.ok) {
+                            alert("The server is unable to provide hourly weather data right now. Please try again later.")
+                            console.log("There was a problem fetching your hourly forcast. Error message...", response.status)
                             throw Error(response.statusText);
                         } else {
                             return response.json()
@@ -533,11 +539,28 @@ export default function Data () {
                 
                 
                 <div>
-                    <div className="container">
-                        <div id="day-picker" className="side-by-side">
-                            <button className="btn btn-primary" onClick={ handleDataToggle }>Get { dataTypeInactive }</button>
-                            <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
-                        </div>                
+                    <div className="container" >
+                        <div className="space-around">
+                            <div className="border">
+
+                                <h2 id="forecast" >Forecast</h2>
+                                <div id="day-picker" className="side-by-side">
+                                    <button aria-label="Back 12 hours" className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
+                                    <div>
+                                        <h4>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h4>
+                                    </div>
+                                    <button aria-label="Forward 12 hours" className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
+                                </div>
+                                
+                                <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
+                            </div>
+                        </div>
+                        <div className="container">
+                            <div id="day-picker" className="side-by-side">
+                                <button className="btn btn-primary" onClick={ handleDataToggle }>Get { dataTypeInactive }</button>
+                                <button className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
+                            </div>                
+                        </div>
                     </div>
                     <div className="table">
                         <table>
