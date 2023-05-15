@@ -63,7 +63,6 @@ export default function Data () {
                 .then(json => json);
             data = data["current_predictions"]["cp"]
             setCurrents(data)
-
         }
 
 
@@ -301,9 +300,7 @@ export default function Data () {
         let dailyUrl = localForecastInfo["properties"]["forecast"]
         let hourlyUrl = localForecastInfo["properties"]["forecastHourly"]
         
-        console.log("localForecastInfo", localForecastInfo)
 
-        console.log("hourlyUrl", hourlyUrl)
         const getForecast = async () => {
 
             const getForecastHourly = () => {
@@ -333,7 +330,6 @@ export default function Data () {
             }
 
             getForecastHourly()
-
 
             if ( !weather.forecastHourly ) {
                 retryCall(getForecastHourly, weather.forecastHourly, "weather.forecastHourly")
@@ -386,7 +382,6 @@ export default function Data () {
 
    const handleIndexInc = () => {
         const length = weather.forecastDaily.length
-        console.log("length", length)
         if ( dailyIdx < length - 1 ) {
             setDailyIndex(dailyIdx + 1)
         }
@@ -421,14 +416,25 @@ export default function Data () {
         setQueryParams(( prev ) => {
             const startTime = weather.forecastDaily[Number(dailyIdx)].startTime
             const beginDate = startTime.slice(0, 4) + startTime.slice(5, 7) + startTime.slice(8, 10)
-            return {
+            if( queryParams.interval !== "MAX_SLACK") {
+                setDailyIndex(0)
+                return {
                 ...prev,
-                begin_date: beginDate,
-                date: null
+                begin_date: null,
+                end_date: null,
+                date: "today"
+                }
+            } else {
+                return {
+                    ...prev,
+                    begin_date: beginDate,
+                    date: null
+                }
             }
+            
         })
 
-    }, [weather.forecastDaily, dailyIdx])
+    }, [weather.forecastDaily, dailyIdx, queryParams.interval, weather.isLoading ])
 
     useEffect(() => {
         if(isMounted) {
@@ -439,6 +445,16 @@ export default function Data () {
     useEffect(() => {
         setIsMounted(true)
     }, [])
+
+    const isNotToday = (date) => {
+        const now = new Date()
+        const dataObj = new Date(date)
+        const nowTimeStamp = now.getTime()
+        const dataTimeStamp = dataObj.getTime()
+        const nowDate = now.getDate()
+        const dataDate = dataObj.getDate()
+        return nowDate !== dataDate
+    }
 
     return (
         <div className="data" >
@@ -497,11 +513,14 @@ export default function Data () {
 
                                 <h2 id="forecast" >Forecast</h2>
                                 <div id="day-picker" className="side-by-side">
-                                    <button aria-label="Back 12 hours" className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button>
-                                    <div>
+                                    {queryParams.interval === "MAX_SLACK" ? <button aria-label="Back 12 hours" className="btn btn-primary" onClick={ handleIndexDec }>{"<"}</button> : null }
+                                    
+                                    <div className="center">
                                         <h4>{ weather.isLoading ? "" : weather.forecastDaily[Number(dailyIdx)].name }</h4>
                                     </div>
-                                    <button aria-label="Forward 12 hours" className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button>
+                                    {queryParams.interval === "MAX_SLACK" ? <button aria-label="Forward 12 hours" className="btn btn-primary" onClick={ handleIndexInc }>{">"}</button> : null }
+
+                                    
                                 </div>
                                 
                                 <p>{ weather.isLoading ? "Loading forecast..." : detailedForecast }</p>
@@ -526,11 +545,19 @@ export default function Data () {
                         </thead>
                         <tbody>
                             {
-                                currents?.map((current, key) => <Current 
-                                                                    current={ current } 
-                                                                    weather={ weather }
-                                                                    key={ key }
-                                                                />)
+                                currents?.map((current, key) => {
+                                   if (isNotToday(current.Time) && queryParams.interval !== "MAX_SLACK" ) {
+                                    return null
+                                   } else {
+                                    return (
+                                        <Current 
+                                            current={ current } 
+                                            weather={ weather }
+                                            key={ key }
+                                        />
+                                    )
+                                   }   
+                                })
                             }
                         </tbody>
                     </table>

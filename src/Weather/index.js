@@ -4,14 +4,12 @@ import './style.css'
 
 export default function Weather (props) {
     const { weather } = props
-
     const getDate = () => {
         let arr = weather.startTime
         let date = new Date(arr)
         return date
     }
     const date = getDate()
-    console.log("date", date)
     let meridian
     const getHours = () => {
         let hours = date.getHours()
@@ -90,7 +88,6 @@ export default function Weather (props) {
 
     const mphToKnots = (speed) => {
         const strNum = speed.slice(0, 2)
-        console.log("strNum", strNum)
         const num = Number(strNum)
         const knots = Math.round(num/1.151)
 
