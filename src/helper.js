@@ -113,7 +113,33 @@ export const getDateTime = () => {
     const day = now.getDate()
     const hour = now.getHours() < 10 ? "0" + now.getHours() : now.getHours()
     const min = now.getMinutes()
-    const currentDate = month + '/' + day + '/' + year + '+' + hour + ':' + min
+    const currentDate = month + '/' + day + '/' + year + ' ' + hour + ':' + min
     return currentDate
+}
+
+export const getTimeStr = (time) => {
+    const getDate = () => {
+        let arr = time.split(/-|\s|:/)
+        let date = new Date(arr[0], arr[1] -1, arr[2], arr[3], arr[4])
+        return date
+    }
+    const date = getDate()
+    let meridian
+    const getHours = () => {
+        let hours = date.getHours()
+        if ( hours < 13 ) {
+            meridian = hours !== 12 ? "am" : "pm"
+            if ( hours < 1 ) {
+                hours = 12
+            }
+            return hours
+        } else {
+            hours -= 12
+            meridian = "pm"
+            return hours
+        }
+    }
+    const timeString = getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + " " + meridian
+    return timeString
 }
 

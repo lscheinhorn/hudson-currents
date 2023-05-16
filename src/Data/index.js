@@ -4,7 +4,7 @@ import Weather from '../Weather'
 import './style.css'
 import { useEffect, useState, useRef } from 'react'
 import Clock from 'react-live-clock'
-import { retryCall, getDay, getMonth } from "../helper"
+import { retryCall, getDay, getMonth, getTimeStr, getDateTime } from "../helper"
 
 export default function Data () {
     const [ currents, setCurrents ] = useState()
@@ -37,6 +37,13 @@ export default function Data () {
         longitude: "-74.0028"
     })
 
+    // const getTime = () => {
+    //     const now = new Date()
+    //     // const nowSlice = now.split().slice(0, 10).join("")
+    //     // return nowSlice
+    //     return now.pop()
+    // }
+    // console.log("get date time", getTime())
 
     useEffect(() => {
 
@@ -456,6 +463,93 @@ export default function Data () {
         return nowTimeStamp > dataTimeStamp
     }
 
+    const [ tides, setTides ] = useState()
+
+    useEffect(() => {
+        if ( !currents ) {
+            return
+        }
+        const now = new Date()
+        const nowTime = now.getTime()
+        const today = now.getDate()
+        const currentTime = new Date(currents[0].Time)
+        const currentDay = currentTime.getDate()
+        console.log("today / currentDate", today, currentDay )
+        if(!isMounted || queryParams.date !== "today" || currentDay !== today ) {
+            console.log("excaped useEffect")
+            return
+        }
+        console.log("Did not excape", queryParams)
+        const nullObj = {
+            tide: null,
+            time: null
+        }
+
+        const getPrevTide = () => {
+           
+            for ( let i = 0; i < currents.length ; i++ ) {
+                const time = new Date(currents[i].Time)
+                const timeStamp = time.getTime()
+                if ( timeStamp > nowTime ) {
+                    if ( i === 0 ) {
+                        if ( currents[ i ] === "slack" ) {
+                            return  nullObj
+                        }
+                    }
+                    if ( currents[ i - 1 ].Type === "slack" ) {
+                        if ( !currents[ i - 2 ]) {
+                            return nullObj
+                        }
+                        return currents[ i - 2 ]
+                    }
+                    return currents[ i - 1 ]
+                } 
+            }
+            if ( currents[currents.length - 1].Type === "slack" ) {
+                return currents[currents.length - 2]
+            }
+            return currents[currents.length - 1]
+        }
+    
+        const getNextTide = () => {
+            const now = new Date()
+            const nowTime = now.getTime()
+            for ( let i = 0; i < currents.length ; i++ ) {
+                const time = new Date(currents[i].Time)
+                const timeStamp = time.getTime()
+                if ( timeStamp > nowTime ) {
+                    if ( currents[ i ].Type === "slack" ) {
+                        if ( currents[ i + 1 ] === undefined ) {
+                            return nullObj
+                        }
+                        return currents[ i + 1 ]
+                    }
+                    return currents[ i ]
+                } 
+            }
+            if ( currents[currents.length - 1].Type === "slack" ) {
+                return nullObj
+            }
+            return currents[currents.length - 1]
+        }
+
+        setTides({
+            prevTide: {
+                time: getPrevTide().Time === null ? null : getTimeStr(getPrevTide().Time),
+                tide: getPrevTide().Time === null ? "Tomorrow" : (getPrevTide().Type === "flood" ? "HIGH" : "LOW")
+            },
+            nextTide: {
+                time: getNextTide().Time === null ? null : getTimeStr(getNextTide().Time),
+                tide: getNextTide().Time === null ? "Tomorrow" : (getNextTide().Type === "flood" ? "HIGH" : "LOW")
+            }
+        })
+
+
+        
+
+
+    }, [currents]  )
+    
     return (
         <div className="data" >
             
@@ -494,8 +588,21 @@ export default function Data () {
             </div>
             <a className="btn btn-primary" href={`http://www.google.com/maps/place/${queryParams.latitude},${queryParams.longitude}/@${queryParams.latitude},${queryParams.longitude},13z`} target="_blank" rel="noreferrer" >VIEW STATION LOCATION</a>
 
-            
-            
+            {
+                tides ?
+                    <div className="container" >
+                        <div className="space-around">
+                            <div className="border">
+                                <h2 id="forecast" >Tides</h2>
+                                <div className="space-around">
+                                    <p>{tides.prevTide.tide === null ? "The last tide was yesterday. Estimate that the previous tide was around 6 hours earlier than the next tide." :`Previous: ${tides.prevTide.tide} - ${tides.prevTide.time}`}</p>
+                                    <p>{ tides.nextTide.tide === null ? "The next tide is tomorrow. Load the next day to see more tides" : `Next: ${tides.nextTide.tide} - ${tides.nextTide.time}`}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    : null
+            }
             { dataType === "Currents" ? 
                 
                 <div>
