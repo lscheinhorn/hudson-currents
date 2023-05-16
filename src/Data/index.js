@@ -4,7 +4,7 @@ import Weather from '../Weather'
 import './style.css'
 import { useEffect, useState, useRef } from 'react'
 import Clock from 'react-live-clock'
-import { retryCall, getDay, getMonth, getTimeStr, getDateTime } from "../helper"
+import { retryCall, getDay, getMonth, getYear, getTimeStr, getDateTime, getNowStr } from "../helper"
 
 export default function Data () {
     const [ currents, setCurrents ] = useState()
@@ -37,13 +37,16 @@ export default function Data () {
         longitude: "-74.0028"
     })
 
-    // const getTime = () => {
-    //     const now = new Date()
-    //     // const nowSlice = now.split().slice(0, 10).join("")
-    //     // return nowSlice
-    //     return now.pop()
-    // }
-    // console.log("get date time", getTime())
+    const now = new Date()
+    const [ refreshTime, setRefreshTime ] = useState({
+        time: getNowStr(now),
+        day: getDay(now, "short"),
+        month: getMonth(now),
+        year: getYear(now),
+        date: now.getDate(),
+        string: getDay(now, "short") + " " + getMonth(now) + " " + now.getDate() + ", " + getYear(now) + " " + getNowStr(now)
+    })
+    
 
     useEffect(() => {
 
@@ -474,12 +477,9 @@ export default function Data () {
         const today = now.getDate()
         const currentTime = new Date(currents[0].Time)
         const currentDay = currentTime.getDate()
-        console.log("today / currentDate", today, currentDay )
         if(!isMounted || queryParams.date !== "today" || currentDay !== today ) {
-            console.log("excaped useEffect")
             return
         }
-        console.log("Did not excape", queryParams)
         const nullObj = {
             tide: null,
             time: null
@@ -595,6 +595,9 @@ export default function Data () {
                             <div className="border">
                                 <h2 id="forecast" >Tides</h2>
                                 <div className="space-around">
+                                    <p style={{display: "inline-block", margin: "10px" }}>{refreshTime.string}</p>
+                                    <button style={{display: "inline-block", margin: "10px"}} className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
+
                                     <p>{tides.prevTide.tide === null ? "The last tide was yesterday. Estimate that the previous tide was around 6 hours earlier than the next tide." :`Previous: ${tides.prevTide.tide} - ${tides.prevTide.time}`}</p>
                                     <p>{ tides.nextTide.tide === null ? "The next tide is tomorrow. Load the next day to see more tides" : `Next: ${tides.nextTide.tide} - ${tides.nextTide.time}`}</p>
                                 </div>

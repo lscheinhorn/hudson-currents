@@ -26,6 +26,7 @@ export const retryCall = (callback, state, stateStr) => {
 
 export const getDay = (date, short) => {
     let day
+    date = new Date(date)
     switch ( date.getDay() ) {
         case 0:
             day = short ? "Sun" : "Sunday"
@@ -143,3 +144,23 @@ export const getTimeStr = (time) => {
     return timeString
 }
 
+export const getNowStr = (date) => {
+    
+    let meridian
+    const getHours = () => {
+        let hours = date.getHours()
+        if ( hours < 13 ) {
+            meridian = hours !== 12 ? "am" : "pm"
+            if ( hours < 1 ) {
+                hours = 12
+            }
+            return hours
+        } else {
+            hours -= 12
+            meridian = "pm"
+            return hours
+        }
+    }
+    const timeString = getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + " " + meridian
+    return timeString
+}
