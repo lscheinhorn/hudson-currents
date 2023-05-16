@@ -453,7 +453,7 @@ export default function Data () {
         const dataTimeStamp = dataObj.getTime()
         const nowDate = now.getDate()
         const dataDate = dataObj.getDate()
-        return nowDate !== dataDate
+        return nowTimeStamp > dataTimeStamp
     }
 
     return (
@@ -546,7 +546,7 @@ export default function Data () {
                         <tbody>
                             {
                                 currents?.map((current, key) => {
-                                   if (isNotToday(current.Time) && queryParams.interval !== "MAX_SLACK" ) {
+                                   if (isNotToday(current.Time) ) {
                                     return null
                                    } else {
                                     return (
