@@ -544,10 +544,6 @@ export default function Data () {
             }
         })
 
-
-        
-
-
     }, [currents]  )
     
     return (
@@ -595,9 +591,7 @@ export default function Data () {
                             <div className="border">
                                 <h2 id="forecast" >Tides</h2>
                                 <div className="space-around">
-                                    <p style={{display: "inline-block", margin: "10px" }}>{refreshTime.string}</p>
-                                    <button style={{display: "inline-block", margin: "10px"}} className="btn btn-primary" onClick={ reload }>{"Refresh"}</button>
-
+                                    <p>{refreshTime.string}</p>
                                     <p>{tides.prevTide.tide === null ? "The last tide was yesterday. Estimate that the previous tide was around 6 hours earlier than the next tide." :`Previous: ${tides.prevTide.tide} - ${tides.prevTide.time}`}</p>
                                     <p>{ tides.nextTide.tide === null ? "The next tide is tomorrow. Load the next day to see more tides" : `Next: ${tides.nextTide.tide} - ${tides.nextTide.time}`}</p>
                                 </div>
