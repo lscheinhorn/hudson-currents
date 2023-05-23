@@ -456,7 +456,7 @@ export default function Data () {
         setIsMounted(true)
     }, [])
 
-    const isNotToday = (date) => {
+    const isEarlier = (date) => {
         const now = new Date()
         const dataObj = new Date(date)
         const nowTimeStamp = now.getTime()
@@ -649,18 +649,22 @@ export default function Data () {
                         </thead>
                         <tbody>
                             {
-                                currents?.map((current, key) => {
-                                   if (isNotToday(current.Time) ) {
-                                    return null
-                                   } else {
+                                currents?.map((current, index, array, length = array.length) => {
+                                    const currentPrev = array[index-1]
+                                    const currentNext = array[index+1]
+                                    console.log("length", length, array)
+                                    if (index > length-2 ? false : isEarlier(currentNext.Time) ) {
+                                        console.log("index", index)
+                                        return null
+                                   } 
+                                   console.log("return current", current)
                                     return (
                                         <Current 
                                             current={ current } 
                                             weather={ weather }
-                                            key={ key }
+                                            key={ index }
                                         />
                                     )
-                                   }   
                                 })
                             }
                         </tbody>
