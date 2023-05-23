@@ -481,8 +481,8 @@ export default function Data () {
             return
         }
         const nullObj = {
-            tide: null,
-            time: null
+            Tide: null,
+            Time: null
         }
 
         const getPrevTide = () => {
