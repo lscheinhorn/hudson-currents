@@ -466,7 +466,16 @@ export default function Data () {
         return nowTimeStamp > dataTimeStamp
     }
 
-    const [ tides, setTides ] = useState()
+    const [ tides, setTides ] = useState({
+        prevTide: {
+            time: null,
+            tide: "Loading"
+        },
+        nextTide: {
+            time: null,
+            tide: "Loading"
+        }
+    })
 
     useEffect(() => {
         if ( !currents ) {
@@ -584,22 +593,20 @@ export default function Data () {
             </div>
             <a className="btn btn-primary" href={`http://www.google.com/maps/place/${queryParams.latitude},${queryParams.longitude}/@${queryParams.latitude},${queryParams.longitude},13z`} target="_blank" rel="noreferrer" >VIEW STATION LOCATION</a>
 
-            {
-                tides ?
-                    <div className="container" >
+            
+            <div className="container" >
+                <div className="space-around">
+                    <div className="border">
+                        <h2 id="forecast" >Tides</h2>
                         <div className="space-around">
-                            <div className="border">
-                                <h2 id="forecast" >Tides</h2>
-                                <div className="space-around">
-                                    <p>{refreshTime.string}</p>
-                                    <p>{tides.prevTide.tide === null ? "The last tide was yesterday. Estimate that the previous tide was around 6 hours earlier than the next tide." :`Previous: ${tides.prevTide.tide} - ${tides.prevTide.time}`}</p>
-                                    <p>{ tides.nextTide.tide === null ? "The next tide is tomorrow. Load the next day to see more tides" : `Next: ${tides.nextTide.tide} - ${tides.nextTide.time}`}</p>
-                                </div>
-                            </div>
+                            <p>{refreshTime.string}</p>
+                            <p>{tides.prevTide.tide === null ? "The last tide was yesterday. Estimate that the previous tide was around 6 hours earlier than the next tide." :`Previous: ${tides.prevTide.tide} - ${tides.prevTide.time}`}</p>
+                            <p>{ tides.nextTide.tide === null ? "The next tide is tomorrow. Load the next day to see more tides" : `Next: ${tides.nextTide.tide} - ${tides.nextTide.time}`}</p>
                         </div>
-                    </div>   
-                    : null
-            }
+                    </div>
+                </div>
+            </div>   
+                    
             { dataType === "Currents" ? 
                 
                 <div>
@@ -653,7 +660,7 @@ export default function Data () {
                                     const currentPrev = array[index-1]
                                     const currentNext = array[index+1]
                                     console.log("length", length, array)
-                                    if (index > length-2 ? false : isEarlier(currentNext.Time) ) {
+                                    if (index > length-2 ? false : (isEarlier(currentNext.Time) ? currentNext.Type !== "slack" : false) ) {
                                         console.log("index", index)
                                         return null
                                    } 
