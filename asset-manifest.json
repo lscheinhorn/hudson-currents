@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/hudson-currents/static/css/main.07055a9c.css",
-    "main.js": "/hudson-currents/static/js/main.97325991.js",
+    "main.js": "/hudson-currents/static/js/main.d3c9e360.js",
     "static/js/787.532200fb.chunk.js": "/hudson-currents/static/js/787.532200fb.chunk.js",
     "index.html": "/hudson-currents/index.html",
     "main.07055a9c.css.map": "/hudson-currents/static/css/main.07055a9c.css.map",
-    "main.97325991.js.map": "/hudson-currents/static/js/main.97325991.js.map",
+    "main.d3c9e360.js.map": "/hudson-currents/static/js/main.d3c9e360.js.map",
     "787.532200fb.chunk.js.map": "/hudson-currents/static/js/787.532200fb.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.07055a9c.css",
-    "static/js/main.97325991.js"
+    "static/js/main.d3c9e360.js"
   ]
 }
