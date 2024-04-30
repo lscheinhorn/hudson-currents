@@ -486,7 +486,8 @@ export default function Data () {
         const today = now.getDate()
         const currentTime = new Date(currents[0].Time)
         const currentDay = currentTime.getDate()
-        if(!isMounted || queryParams.date !== "today" || currentDay !== today ) {
+        if(!isMounted || queryParams.date !== ("today" || null) || currentDay !== today ) {
+            !isMounted ? alert("isMounted") : queryParams.date !== ("today" || null) ? alert(`date not today date = ${queryParams.date}`) : currentDay !== today  ? alert("day not today") : alert("None of the above")
             return
         }
         const nullObj = {
@@ -553,7 +554,7 @@ export default function Data () {
             }
         })
 
-    }, [currents]  )
+    }, [currents, queryParams.date]  )
     
     return (
         <div className="data" >
