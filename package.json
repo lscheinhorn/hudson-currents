@@ -1,7 +1,7 @@
 {
-  "name": "predicted_currents",
+  "name": "noaa_data",
   "version": "0.1.0",
-  "homepage": "https://www.predictedcurrents.com",
+  "homepage": "https://lscheinhorn.github.io/hudson-currents",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
