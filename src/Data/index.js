@@ -546,11 +546,11 @@ export default function Data () {
         setTides({
             prevTide: {
                 time: getPrevTide().Time === null ? null : getTimeStr(getPrevTide().Time),
-                tide: getPrevTide().Time === null ? "Tomorrow" : (getPrevTide().Type === "flood" ? "HIGH" : "LOW")
+                tide: getPrevTide().Time === null ? null : (getPrevTide().Type === "flood" ? "HIGH" : "LOW")
             },
             nextTide: {
                 time: getNextTide().Time === null ? null : getTimeStr(getNextTide().Time),
-                tide: getNextTide().Time === null ? "Tomorrow" : (getNextTide().Type === "flood" ? "HIGH" : "LOW")
+                tide: getNextTide().Time === null ? null : (getNextTide().Type === "flood" ? "HIGH" : "LOW")
             }
         })
 
@@ -595,18 +595,25 @@ export default function Data () {
             <a className="btn btn-primary" href={`http://www.google.com/maps/place/${queryParams.latitude},${queryParams.longitude}/@${queryParams.latitude},${queryParams.longitude},13z`} target="_blank" rel="noreferrer" >VIEW STATION LOCATION</a>
 
             
-            <div className="container" >
-                <div className="space-around">
-                    <div className="border">
-                        <h2 id="forecast" >Tides</h2>
+
+            {
+                tides.prevTide.time || tides.nextTide.time ? (
+                    <div className="container" >
                         <div className="space-around">
                             <p>{refreshTime.string}</p>
-                            <p>{tides.prevTide.tide === null ? "The last tide was yesterday. Estimate that the previous tide was around 6 hours earlier than the next tide." :`Previous: ${tides.prevTide.tide} - ${tides.prevTide.time}`}</p>
-                            <p>{ tides.nextTide.tide === null ? "The next tide is tomorrow. Load the next day to see more tides" : `Next: ${tides.nextTide.tide} - ${tides.nextTide.time}`}</p>
+                            <div className="border">
+                                <h2 id="forecast" >Tides</h2>
+                                <div className="space-around">
+                                    <p>{tides.prevTide.tide === null ? "The last tide was yesterday." :`Previous: ${tides.prevTide.tide} - ${tides.prevTide.time}`}</p>
+                                    <p>{ tides.nextTide.tide === null ? "The next tide is tomorrow." : `Next: ${tides.nextTide.tide} - ${tides.nextTide.time}`}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>   
+                    </div>   
+                ) : null
+            }
+
+            
                     
             { dataType === "Currents" ? 
                 
