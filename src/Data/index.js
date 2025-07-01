@@ -76,11 +76,6 @@ const stationMap = {
     latitude: "40.8496",
     longitude: "-73.9498",
   },
-  NYH1930: {
-    stationStr: "Spuyten Duyvil",
-    latitude: "40.8779",
-    longitude: "-73.9287",
-  },
   ACT3671: {
     stationStr: "Riverdale",
     latitude: "40.9000",
@@ -160,8 +155,8 @@ export default function Data() {
   const [isMounted, setIsMounted] = useState(false);
   const [detailedForecast, setDetailedForecast] = useState("");
   const [dailyIdx, setDailyIdx] = useState(0);
-  const defaultStation = "NYH1928";
-  const [tideStation, setTideStation] = useState("8518750");
+  const defaultStation = "HUR0611";
+  const [tideStation, setTideStation] = useState("8518902");
 
   const [queryParams, setQueryParams] = useState({
     begin_date: null,
@@ -502,8 +497,8 @@ export default function Data() {
       <div className="space-around">
         <h2>Tide Station</h2>
         <select value={tideStation} onChange={handleTideStationChange} title="Tide Station">
-          <option value="8518750">The Battery</option>
           <option value="8518902">Dyckman Marina</option>
+          <option value="8518750">The Battery</option>
         </select>
       </div>  
 
