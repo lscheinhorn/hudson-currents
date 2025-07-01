@@ -5,20 +5,20 @@ export const retryCall = (callback, state, stateStr) => {
         
         setTimeout(() => {
             if ( state ) {
-                console.log("retry successful", stateStr, state)
+                // console.log("retry successful", stateStr, state)
                 return
             } else if ( count === 3 ) {
-                console.log(`We can't load your ${stateStr} right now. You can check your location permissions or refresh the page`)
+                // console.log(`We can't load your ${stateStr} right now. You can check your location permissions or refresh the page`)
                 return
             } else {
                 count++
-                console.log("retry callback", stateStr, state)
+                // console.log("retry callback", stateStr, state)
                 callback()
                 retry()
             }
         }, 10000)
         retry(callback, state, stateStr)
-        console.log("retry", stateStr)
+        // console.log("retry", stateStr)
     }
     
 }
