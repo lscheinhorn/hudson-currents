@@ -116,6 +116,57 @@ const stationMap = {
     latitude: "41.2416",
     longitude: "-73.9667",
   },
+  ACT3711: {
+    stationStr: "Peekskill",
+    latitude: "41.2833",
+    longitude: "-73.9500",
+  },
+  HUR0504: {
+    stationStr: "Bear Mountain Bridge Depth: 13 feet",
+    latitude: "41.3159",
+    longitude: "-73.9839",
+  },
+  ACT3721: {
+    stationStr: "Highland Falls ",
+    latitude: "41.3667",
+    longitude: "-73.9667",
+  },
+  ACT3726: {
+    stationStr: "West Point, off Duck Island",
+    latitude: "41.4000",
+    longitude: "-73.9500",
+  },
+  HUR0506: {
+    stationStr: "Newburgh Beacon Bridge Depth: 4 feet",
+    latitude: "41.5166",
+    longitude: "-73.9917",
+  },
+  HUR0507: {
+    stationStr: "Roseton Depth: 5 feet",
+    latitude: "41.5625",
+    longitude: "-73.9705",
+  },
+  ACT3741: {
+    stationStr: "New Hamburg",
+    latitude: "41.5833",
+    longitude: "-73.9500",
+  },
+  HUR0620: {
+    stationStr: "Mid-Hudson Suspension Bridge Depth: 16 feet",
+    latitude: "41.7018",
+    longitude: "-73.9459",
+  },
+  ACT3751: {
+    stationStr: "Hyde Park",
+    latitude: "41.7833",
+    longitude: "-73.9500",
+  },
+  HUR0509: {
+    stationStr: "Kingston Point, south of Depth: 4 feet",
+    latitude: "41.9183",
+    longitude: "-73.9595",
+  },
+  
 };
 
 // Utility to get today's date string in YYYYMMDD format.
