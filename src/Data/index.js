@@ -31,11 +31,11 @@ const stationMap = {
     latitude: "40.6723",
     longitude: "-74.0239",
   },
-  NYH1915: {
-    stationStr: "Robbins Reef Light, 0.6 nm E of, Depth: 11 feet",
-    latitude: "40.6552",
-    longitude: "-74.0507",
-  },
+  // NYH1915: {
+  //   stationStr: "Robbins Reef Light, 0.6 nm E of, Depth: 11 feet",
+  //   latitude: "40.6552",
+  //   longitude: "-74.0507",
+  // },
   NYH1914: {
     stationStr: "Constable Hook Approach Depth: 9 feet",
     latitude: "40.6507",
